@@ -1,0 +1,16 @@
+name: Force Redeploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  clear_cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clear GitHub Pages cache
+        run: |
+          echo "🚀 Clearing GitHub Pages cache..."
+          curl -X PURGE https://huroboticsadmi-dev.github.io/Hurobotics_New/
