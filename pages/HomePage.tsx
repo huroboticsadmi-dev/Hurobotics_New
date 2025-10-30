@@ -10,57 +10,117 @@ interface HomePageProps {
 }
 
 // -------------------- Hero Section --------------------
-const heroSlides = [
+const heroVideos = [
   {
     id: 1,
-    title: "신속한 A/S는 물론\n고객 만족을 최고의 가치로 삼는 휴로틱스!",
-    imageUrl: "./images/hero1.jpg",
+    title: "신속한 A/S는 물론 고객 만족을\n최고의 가치로 삼는 휴로틱스!",
+    videoUrl: "./videos/LIBERTY_CC1.mp4",
   },
   {
     id: 2,
     title: "인건비 절감, 기업 이윤의 시작\n생산성을 높이는 가장 확실한 투자!",
-    imageUrl: "./images/hero2.jpg",
+    videoUrl: "./videos/LIBERTY_MT1.mp4",
   },
   {
     id: 3,
-    title: "성공적인 스마트 팩토리 자동화를 위한\n최고의 파트너!",
-    imageUrl: "./images/hero3.jpg",
+    title: "성공적인\n스마트 팩토리 자동화를 위한 최고의 파트너!",
+    videoUrl: "./videos/LIBERTY_T300.mp4",
   },
 ];
 
 const HeroSection: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const [isManualSwitch, setIsManualSwitch] = useState(false);
 
+  // 🎬 수동 조작 & 자동 전환 공존
+  const nextSlide = () => {
+    setIsManualSwitch(true);
+    setCurrentSlide((p) => (p === heroVideos.length - 1 ? 0 : p + 1));
+  };
+  const prevSlide = () => {
+    setIsManualSwitch(true);
+    setCurrentSlide((p) => (p === 0 ? heroVideos.length - 1 : p - 1));
+  };
+
+  const handleEnded = () => {
+    if (!isManualSwitch) {
+      setCurrentSlide((p) => (p === heroVideos.length - 1 ? 0 : p + 1));
+    }
+  };
+
+  // ⏱ 수동조작 후 3초간 자동전환 일시 정지
   useEffect(() => {
-    const t = setInterval(() => setCurrentSlide((p) => (p === heroSlides.length - 1 ? 0 : p + 1)), 5000);
-    return () => clearInterval(t);
-  }, []);
+    const t = setTimeout(() => setIsManualSwitch(false), 3000);
+    return () => clearTimeout(t);
+  }, [currentSlide]);
 
-  const slide = heroSlides[currentSlide];
+  // 현재 슬라이드만 재생, 나머지 일시정지
+  useEffect(() => {
+    videoRefs.current.forEach((v, i) => {
+      if (!v) return;
+      if (i === currentSlide) {
+        v.currentTime = 0;
+        v.play().catch(() => {});
+      } else {
+        v.pause();
+      }
+    });
+  }, [currentSlide]);
 
   return (
-    <section
-      className="relative h-screen w-full overflow-hidden text-white transition-all duration-700"
-      style={{
-        backgroundImage: `url(${slide.imageUrl})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
+    <section className="relative h-screen w-full overflow-hidden text-white transition-all duration-700">
+      {heroVideos.map((slide, i) => (
+        <video
+          key={slide.id}
+          ref={(el) => {
+            videoRefs.current[i] = el;
+          }}
+          src={slide.videoUrl}
+          muted
+          playsInline
+          autoPlay={i === currentSlide}
+          onEnded={handleEnded}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+            i === currentSlide ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      ))}
+
       <div className="absolute inset-0 bg-black/50 z-10" />
+
       <div className="relative w-full h-full flex flex-col items-center justify-center text-center px-6 z-20">
-        {/* ✅ line-height 강제 확대 */}
         <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold !leading-[1.5] whitespace-pre-line font-paperlogi drop-shadow-[0_4px_6px_rgba(0,0,0,0.4)] max-w-5xl">
-          {slide.title}
+          {heroVideos[currentSlide].title}
         </h1>
       </div>
 
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
-        {heroSlides.map((_, i) => (
+      {/* 좌우 버튼 */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-6 top-1/2 -translate-y-1/2 z-30 bg-black/40 hover:bg-black/60 p-3 rounded-full"
+      >
+        ◀
+      </button>
+      <button
+        onClick={nextSlide}
+        className="absolute right-6 top-1/2 -translate-y-1/2 z-30 bg-black/40 hover:bg-black/60 p-3 rounded-full"
+      >
+        ▶
+      </button>
+
+      {/* 하단 인디케이터 */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex space-x-2">
+        {heroVideos.map((_, i) => (
           <button
             key={i}
-            onClick={() => setCurrentSlide(i)}
-            className={`w-3 h-3 rounded-full ${currentSlide === i ? "bg-white" : "bg-white/50"}`}
+            onClick={() => {
+              setIsManualSwitch(true);
+              setCurrentSlide(i);
+            }}
+            className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+              currentSlide === i ? "bg-white" : "bg-white/50"
+            }`}
           />
         ))}
       </div>
@@ -69,7 +129,9 @@ const HeroSection: React.FC = () => {
 };
 
 // -------------------- Showcase Products Section --------------------
-const ShowcaseProductsSection: React.FC<{ onProductSelect: (product: Product) => void }> = ({ onProductSelect }) => {
+const ShowcaseProductsSection: React.FC<{ onProductSelect: (product: Product) => void }> = ({
+  onProductSelect,
+}) => {
   const categories = ["청소로봇", "물류로봇", "서빙로봇", "특수목적로봇"] as const;
   const [activeCategory, setActiveCategory] = useState<(typeof categories)[number]>("청소로봇");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -120,7 +182,9 @@ const ShowcaseProductsSection: React.FC<{ onProductSelect: (product: Product) =>
             {categories.map((cat, i) => (
               <button
                 key={cat}
-                ref={(el) => (buttonRefs.current[i] = el)}
+                ref={(el: HTMLButtonElement | null) => {
+                  buttonRefs.current[i] = el;
+                }}
                 onClick={() => handleCategorySelect(cat)}
                 className={`relative px-6 py-2 rounded-full text-lg font-semibold z-10 ${
                   activeCategory === cat ? "text-white" : "text-slate-700 hover:text-[#175689]"
@@ -174,7 +238,7 @@ const ShowcaseProductsSection: React.FC<{ onProductSelect: (product: Product) =>
                       className={`mx-auto transition-all duration-500 ${
                         offset === 0 ? "h-80 cursor-pointer" : "h-56"
                       }`}
-                      onClick={() => offset === 0 && onProductSelect(product)}
+                      onClick={() => offset === 0 && onProductSelect({ ...product })}
                     />
                     {offset === 0 ? (
                       <>
