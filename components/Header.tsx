@@ -21,10 +21,8 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   const isSolid = currentPage !== "home" || scrolled || isMenuVisible;
   const hasSubmenus = NAV_LINKS.some((l) => l.children && l.children.length > 0);
 
-  const darkLogo =
-    "https://i.postimg.cc/MpCPzjY4/hyuaenlobotigseu-kkamang-galo.png";
-  const whiteLogo =
-    "https://i.postimg.cc/t4QWTdLv/hyuaenlobotigseu-hayang-galo.png";
+  const darkLogo = "https://i.postimg.cc/MpCPzjY4/hyuaenlobotigseu-kkamang-galo.png";
+  const whiteLogo = "https://i.postimg.cc/t4QWTdLv/hyuaenlobotigseu-hayang-galo.png";
 
   return (
     <header
@@ -38,8 +36,8 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
         }
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* ✅ flex-row 추가로 F12에서 세로 정렬 방지 */}
-          <div className="flex flex-row items-center justify-between h-20">
+          {/* ✅ flex-nowrap로 한 줄 유지 */}
+          <div className="flex flex-nowrap items-center justify-between h-20">
             {/* 로고 */}
             <div className="flex-shrink-0">
               <button
@@ -56,11 +54,11 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
 
             {/* 네비게이션 */}
             <nav
-              className="hidden md:flex items-center h-full"
+              className="hidden md:flex items-center h-full flex-nowrap"
               onMouseEnter={() => hasSubmenus && setIsMenuVisible(true)}
             >
-              {/* ✅ inline-flex로 줄바꿈 완전 방지 */}
-              <div className="inline-flex items-center space-x-2 h-full">
+              {/* ✅ inline-flex + whitespace-nowrap 로 줄바꿈 완전 차단 */}
+              <div className="inline-flex items-center whitespace-nowrap space-x-6 h-full">
                 {NAV_LINKS.map((link) => (
                   <div key={link.name} className="h-full flex items-center group relative">
                     <button
@@ -68,25 +66,26 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                       className={
                         "px-4 py-2 rounded-md text-lg font-medium transition-colors duration-300 flex items-center cursor-pointer " +
                         (isSolid
-                          ? "text-slate-700 hover:text-blue-800"
+                          ? "text-slate-700 hover:text-[#175689]"
                           : "text-white hover:text-slate-200")
                       }
                     >
-                      <span>{link.name}</span>
+                      <span className="whitespace-nowrap">{link.name}</span>
                     </button>
                   </div>
                 ))}
               </div>
             </nav>
 
-            <div className="justify-self-end" />
+            {/* 공간 균형용 더미 */}
+            <div className="flex-shrink-0 w-4" />
           </div>
         </div>
 
         {/* Mega Menu */}
         <div
           className={
-            "absolute top-full left-0 w-full bg-blue-900 bg-opacity-95 backdrop-blur-sm shadow-lg transition-all duration-300 ease-in-out transform " +
+            "absolute top-full left-0 w-full bg-[#175689] bg-opacity-95 backdrop-blur-sm shadow-lg transition-all duration-300 ease-in-out transform " +
             (isMenuVisible ? "max-h-96 opacity-100" : "max-h-0 opacity-0 invisible")
           }
           aria-hidden={!isMenuVisible}

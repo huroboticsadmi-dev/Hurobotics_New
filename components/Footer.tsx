@@ -12,7 +12,11 @@ const Footer: React.FC = () => {
             <h2 className="text-3xl font-bold text-white mb-4">HuRobotics</h2>
             <div className="space-y-2 text-slate-400 text-sm">
               <p>대표이사: 김기만</p>
-              <p>주소: (본사) 서울시 강남구 논현동 203 (사업장) 서울시 서초구 방배동 2732-45</p>
+              <p>
+                주소: <br />
+                (본사) 서울시 강남구 논현동 203 <br />
+                (사업장) 서울시 서초구 방배동 2732-45
+              </p>
               <p>사업자등록번호: 819-81-03171</p>
               <p>전화: 1577-3706, 070-4155-5542</p>
               <p>영업시간: 09:00 ~ 18:00</p>
@@ -44,14 +48,16 @@ const Footer: React.FC = () => {
               </a>
             </div>
 
-            {/* ✅ 정책 링크 (아래로 내림) */}
-            <div className="flex space-x-6 text-sm mt-2">
-              <a href="#" className="hover:text-white transition-colors">
-                개인정보처리방침
-              </a>
-              <a href="#" className="hover:text-white transition-colors">
-                이메일무단수집거부
-              </a>
+            {/* ✅ 정책 링크 (세로 두 줄 정렬) */}
+            <div className="flex flex-col md:flex-row md:space-x-6 text-sm text-center md:text-right">
+              <div>
+                <span className="block">개인정보처리</span>
+                <span className="block">방침</span>
+              </div>
+              <div>
+                <span className="block">이메일무단수집</span>
+                <span className="block">거부</span>
+              </div>
             </div>
           </div>
         </div>
