@@ -7,15 +7,16 @@ import HomePage from "./pages/HomePage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import ProductsPage from "./pages/ProductsPage";
 import SolutionsPage from "./pages/SolutionsPage";
-import DemoPage from "./pages/DemoPage";
 import InquiryPage from "./pages/InquiryPage";
 import SupportPage from "./pages/SupportPage";
+import RentalPage from "./pages/RentalPage"; // ✅ 체험신청 페이지 추가
 import type { Product, PageId } from "./types";
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<PageId>("home");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
+  // ✅ 페이지 변경 시 항상 맨 위로 이동
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPage]);
@@ -41,7 +42,6 @@ const App: React.FC = () => {
             onNavigate={handleNavigate}
           />
         );
-
       case "product":
         return selectedProduct ? (
           <ProductDetailPage
@@ -54,25 +54,14 @@ const App: React.FC = () => {
             onNavigate={handleNavigate}
           />
         );
-
       case "products":
         return <ProductsPage onProductSelect={handleProductSelect} />;
-
       case "solutions":
         return <SolutionsPage />;
-
-      case "demo":
-        return <DemoPage />; // ✅ 체험신청 페이지 연결 (문의폼만 표시)
-
-      case "company":
-        return <DemoPage />; // 🔹 필요 시 나중에 회사소개 전용 페이지로 교체 가능
-
-      case "about":
-        return <DemoPage />; // 🔹 현재는 임시 연결 유지
-
+      case "rental":
+        return <RentalPage />;
       case "inquiry":
-        return <SupportPage />; // ✅ 고객지원 (4탭 구조: A/S, 파트너십, 자료실, FAQ)
-
+        return <SupportPage />;
       default:
         return (
           <HomePage
@@ -85,8 +74,14 @@ const App: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
+      {/* ✅ 고정 Header */}
       <Header currentPage={currentPage} onNavigate={handleNavigate} />
+
+
+      {/* ✅ 메인 콘텐츠 */}
       <main className="flex-grow">{renderPage()}</main>
+
+      {/* ✅ Footer */}
       <Footer />
     </div>
   );

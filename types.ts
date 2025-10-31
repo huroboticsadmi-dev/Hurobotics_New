@@ -8,7 +8,7 @@ export type PageId =
   | 'company'
   | 'inquiry'
   | 'about'
-  | 'demo';     // ✅ 체험신청 추가 (새 메뉴)
+  | 'rental'; // ✅ 체험문의 추가!
 
 export interface Page {
   name: string;

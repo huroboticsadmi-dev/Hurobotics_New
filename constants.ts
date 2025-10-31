@@ -1,4 +1,4 @@
-import type { Page, Solution } from "./types";
+import type { Page, Solution, Product, ProductCategory } from "./types";
 
 // --- NAV_LINKS ---
 export const NAV_LINKS: Page[] = [
@@ -25,11 +25,9 @@ export const NAV_LINKS: Page[] = [
   },
   {
     name: "체험신청",
-    path: "/demo",
-    pageId: "demo",
-    children: [
-      { name: "체험신청", path: "/demo", pageId: "demo" },
-    ],
+    path: "/rental", // ✅ 기존 demo → rental로 교체
+    pageId: "rental",
+    children: [{ name: "체험신청", path: "/rental", pageId: "rental" }],
   },
   {
     name: "고객지원",
@@ -45,18 +43,14 @@ export const NAV_LINKS: Page[] = [
 ];
 
 // --- PRODUCTS ---
-export const PRODUCTS = [
+export const PRODUCTS: Product[] = [
   {
     id: "MT1",
     title: "LIBERTY MT1",
     name: "대규모 공간 청소가 가능한 건식청소로봇",
     imageUrl: "./images/LIBERTY_MT1.png",
-    category: "청소로봇" as const,
-    descriptionPoints: [
-      "AI 기반 자율주행",
-      "고효율 필터 시스템",
-      "IoT 실시간 모니터링",
-    ],
+    category: "청소로봇" as ProductCategory,
+    descriptionPoints: ["AI 기반 자율주행", "고효율 필터 시스템", "IoT 실시간 모니터링"],
     type: "Cleaner",
     path: "/product/MT1",
     isAvailable: true,
@@ -66,12 +60,8 @@ export const PRODUCTS = [
     title: "LIBERTY CC1",
     name: "지능형 상업용 청소 로봇",
     imageUrl: "./images/LIBERTY_CC1.png",
-    category: "청소로봇" as const,
-    descriptionPoints: [
-      "AI 기반 자율주행",
-      "고효율 필터 시스템",
-      "IoT 실시간 모니터링",
-    ],
+    category: "청소로봇" as ProductCategory,
+    descriptionPoints: ["AI 기반 자율주행", "고효율 필터 시스템", "IoT 실시간 모니터링"],
     type: "Cleaner",
     path: "/product/CC1",
     isAvailable: true,
@@ -81,7 +71,7 @@ export const PRODUCTS = [
     title: "LIBERTY SH1",
     name: "직립형 스마트 바닥 세척기",
     imageUrl: "./images/LIBERTY_SH1_BLACK.png",
-    category: "청소로봇" as const,
+    category: "청소로봇" as ProductCategory,
     descriptionPoints: ["다차원 청소", "부품 자체 검사", "빠른 배터리 교체"],
     type: "Cleaner",
     path: "/product/SH1",
@@ -92,12 +82,8 @@ export const PRODUCTS = [
     title: "LIBERTY T300",
     name: "자율 물류 이동 솔루션",
     imageUrl: "./images/LIBERTY_T300_WHITE.png",
-    category: "물류로봇" as const,
-    descriptionPoints: [
-      "자율 물류 이동",
-      "경로 최적화 알고리즘",
-      "다중 로봇 관리 시스템",
-    ],
+    category: "물류로봇" as ProductCategory,
+    descriptionPoints: ["자율 물류 이동", "경로 최적화 알고리즘", "다중 로봇 관리 시스템"],
     type: "Logistics",
     path: "/product/T300",
     isAvailable: true,
@@ -107,12 +93,8 @@ export const PRODUCTS = [
     title: "비대면 배달 서비스 로봇",
     name: "서빙 및 배송 자동화",
     imageUrl: "./images/LIBERTY_T300_WHITE.png",
-    category: "서빙로봇" as const,
-    descriptionPoints: [
-      "빠르고 안전한 배송",
-      "엘리베이터 연동 가능",
-      "비접촉 서비스 제공",
-    ],
+    category: "서빙로봇" as ProductCategory,
+    descriptionPoints: ["빠르고 안전한 배송", "엘리베이터 연동 가능", "비접촉 서비스 제공"],
     type: "Delivery",
     path: "/solutions",
     isAvailable: false,
@@ -122,17 +104,13 @@ export const PRODUCTS = [
     title: "맞춤형 특수 임무 로봇",
     name: "현장 맞춤 기능 설계",
     imageUrl: "./images/LIBERTY_MT1.png",
-    category: "특수목적로봇" as const,
-    descriptionPoints: [
-      "맞춤형 기능 설계",
-      "위험 구역 투입 가능",
-      "고강도 내구성 확보",
-    ],
+    category: "특수목적로봇" as ProductCategory,
+    descriptionPoints: ["맞춤형 기능 설계", "위험 구역 투입 가능", "고강도 내구성 확보"],
     type: "Special",
     path: "/solutions",
     isAvailable: false,
   },
-] as const;
+];
 
 // --- SOLUTIONS ---
 export const SOLUTIONS: Solution[] = [
