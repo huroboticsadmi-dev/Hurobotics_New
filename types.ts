@@ -8,7 +8,8 @@ export type PageId =
   | 'company'
   | 'inquiry'
   | 'about'
-  | 'rental'; // ✅ 체험문의 추가!
+  | 'rental'    // ✅ 체험문의 추가!
+  | 'support';  // ✅ 지원센터(고객지원) 페이지 추가!
 
 export interface Page {
   name: string;
@@ -44,7 +45,7 @@ export interface Product {
   descriptionPoints: string[];
   type: string;
   path: string;
-  isAvailable?: boolean; // ✅ 새로 추가
+  isAvailable?: boolean; // ✅ 제품 준비 상태 표시
 }
 
 export interface Solution {
