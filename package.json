@@ -3,13 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://huroboticsadmi-dev.github.io/hurobotics",
+  "homepage": "https://huroboticsadmi-dev.github.io/Hurobotics_New",
   "scripts": {
     "dev": "vite",
     "build": "vite build && copy docs\\index.html docs\\404.html",
     "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d docs -b main -r https://github.com/huroboticsadmi-dev/hurobotics.git"
+    "deploy": "npm run build && git add docs && git commit -m \"build: update docs\" && git push origin main"
   },
   "dependencies": {
     "react": "^19.2.0",
@@ -21,7 +20,6 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.1.0",
-    "gh-pages": "^6.3.0",
     "typescript": "^5.9.3",
     "vite": "^6.4.1"
   }
