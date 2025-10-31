@@ -6,10 +6,10 @@
   "homepage": "https://huroboticsadmi-dev.github.io/hurobotics",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cp docs/index.html docs/404.html", 
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist -r https://github.com/huroboticsadmi-dev/hurobotics.git"
+    "deploy": "gh-pages -d docs -r https://github.com/huroboticsadmi-dev/hurobotics.git"
   },
   "dependencies": {
     "react": "^19.2.0",
