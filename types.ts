@@ -46,6 +46,8 @@ export interface Product {
   type: string;
   path: string;
   isAvailable?: boolean; // ✅ 제품 준비 상태 표시
+  longDescription?: string; // ✅ 제품 상세 설명 (optional)
+  specs?: Record<string, string>; // ✅ 제품 사양 (optional)
 }
 
 export interface Solution {
