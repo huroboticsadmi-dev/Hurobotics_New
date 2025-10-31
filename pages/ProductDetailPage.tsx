@@ -4,10 +4,14 @@ import type { Product } from '../types';
 interface ProductDetailPageProps {
   product: Product;
   onBack: () => void;
+  onNavigate?: (pageId: string) => void; // ✅ 체험신청 이동용
 }
 
-const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onBack }) => {
-  // ✅ 데이터가 없는 경우 방어
+const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
+  product,
+  onBack,
+  onNavigate,
+}) => {
   if (!product) {
     return (
       <div className="bg-white pt-24 min-h-screen flex flex-col items-center justify-center">
@@ -22,7 +26,6 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onBack }
     );
   }
 
-  // ✅ 안전한 구조 분해 (비어 있어도 오류 없음)
   const {
     name = '이름 없는 제품',
     imageUrl = '',
@@ -46,7 +49,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onBack }
 
         {/* 메인 콘텐츠 */}
         <div className="grid md:grid-cols-2 gap-12 items-start">
-          {/* 이미지 영역 */}
+          {/* 이미지 */}
           <div>
             <img
               src={
@@ -68,7 +71,6 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onBack }
             <h1 className="text-4xl font-bold text-slate-900 mb-4">{name}</h1>
             <p className="text-lg text-slate-600 mb-8">{longDescription}</p>
 
-            {/* ✅ 제품 사양 (비어 있어도 렌더링 오류 X) */}
             <div className="bg-slate-50 p-6 rounded-lg">
               <h2 className="text-2xl font-semibold text-slate-800 mb-4">
                 제품 사양
@@ -90,9 +92,12 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onBack }
               )}
             </div>
 
-            {/* 견적 문의 버튼 */}
+            {/* 견적 문의 버튼 → 체험신청 이동 */}
             <div className="mt-8">
-              <button className="w-full bg-blue-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-900 transition-colors duration-300 shadow-lg">
+              <button
+                onClick={() => onNavigate && onNavigate("rental")} // ✅ 체험신청 페이지로 이동
+                className="w-full bg-blue-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-900 transition-colors duration-300 shadow-lg"
+              >
                 견적 문의하기
               </button>
             </div>
