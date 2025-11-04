@@ -1,48 +1,84 @@
-// components/InquiryForm.tsx
 import React, { useState } from "react";
 
 const InquiryForm: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const data = new FormData(form);
 
-    setLoading(true);
-    setError(null);
-
-    try {
-      // ✅ 정확한 Google Apps Script Web App URL (/exec)
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbw-sHvdJtK4nt24gtBMViRsP3YeBPY9tCLzN3UepdJ-2BE80Qd4nz76UKZSyn-rbwI0/exec",
-        {
-          method: "POST",
-          body: data,
-          mode: "no-cors", // ✅ CORS 문제 방지용
-        }
-      );
-
-      // Apps Script no-cors 응답은 상태 확인이 불가능 → 바로 성공 처리
-      setSubmitted(true);
-    } catch (err) {
-      console.error("❌ 전송 오류:", err);
-      setError("서버 연결 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
-    } finally {
-      setLoading(false);
-    }
+    fetch(
+      "https://script.google.com/macros/s/AKfycbw-sHvdJtK4nt24gtBMViRsP3YeBPY9tCLzN3UepdJ-2BE80Qd4nz76UKZSyn-rbwI0/exec",
+      {
+        method: "POST",
+        body: data,
+        mode: "no-cors",
+      }
+    ).then(() => setSubmitted(true));
   };
 
   return (
-    <div className="flex justify-center items-start bg-white py-16 px-4">
+    <div className="flex flex-col justify-start items-center bg-white pt-32 pb-16 px-4">
+      {/* ✅ 맨 위에 배너 이미지 추가 */}
+      <img
+        src="./images/LIBERTY_CC1.png" // 🔸 여기에 네 이미지 경로 넣어줘!
+        alt="문의 배너 이미지"
+        className="w-full max-w-4xl rounded-2xl shadow-md mb-10"
+      />
+
       <div className="w-full max-w-3xl bg-white rounded-2xl shadow-xl border border-gray-100">
         {!submitted ? (
           <form onSubmit={handleSubmit} className="p-10 sm:p-12">
             <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
               문의를 남겨주세요
             </h2>
+
+            {/* 문의유형 */}
+            <div className="mb-6">
+              <label className="block text-left text-lg font-semibold text-gray-800 mb-3">
+                문의유형<span className="text-[#175689]">*</span>
+              </label>
+              <div className="flex flex-wrap gap-4">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="entry.1042803837"
+                    value="고객지원"
+                    required
+                    className="text-[#175689] focus:ring-[#175689]"
+                  />
+                  고객지원
+                </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="entry.1042803837"
+                    value="렌탈문의"
+                    className="text-[#175689] focus:ring-[#175689]"
+                  />
+                  렌탈문의
+                </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="entry.1042803837"
+                    value="A/S신청"
+                    className="text-[#175689] focus:ring-[#175689]"
+                  />
+                  A/S신청
+                </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="entry.1042803837"
+                    value="파트너십"
+                    className="text-[#175689] focus:ring-[#175689]"
+                  />
+                  파트너십
+                </label>
+              </div>
+            </div>
 
             {/* 이름 */}
             <div className="mb-6">
@@ -113,24 +149,12 @@ const InquiryForm: React.FC = () => {
               </label>
             </div>
 
-            {/* 오류 메시지 */}
-            {error && (
-              <div className="text-red-500 text-center mb-4 font-semibold">
-                {error}
-              </div>
-            )}
-
             {/* 제출 버튼 */}
             <button
               type="submit"
-              disabled={loading}
-              className={`w-full py-4 rounded-lg shadow-md font-bold text-white transition duration-300 ${
-                loading
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-[#175689] hover:bg-[#144d74]"
-              }`}
+              className="w-full bg-[#175689] hover:bg-[#144d74] text-white font-bold py-4 rounded-lg shadow-md transition duration-300"
             >
-              {loading ? "전송 중..." : "문의하기 ↗"}
+              문의하기 ↗
             </button>
           </form>
         ) : (

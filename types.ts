@@ -9,7 +9,8 @@ export type PageId =
   | 'inquiry'
   | 'about'
   | 'rental'    // ✅ 체험문의 추가!
-  | 'support';  // ✅ 지원센터(고객지원) 페이지 추가!
+  | 'support'  // ✅ 지원센터(고객지원) 페이지 추가!
+  | 'ASPage';
 
 export interface Page {
   name: string;

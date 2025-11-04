@@ -1,15 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+// pages/HomePage.tsx
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { PRODUCTS, SOLUTIONS } from "../constants";
 import type { Product, PageId } from "../types";
 import VideoSection from "../components/VideoSection";
 
 /* =========================
-   Hero Section (줄간 조절 가능)
+   Hero Section
 ========================= */
 const heroVideos = [
   {
     id: 1,
-    title: "신속한 A/S는 물론 고객 만족을\n최고의 가치로 삼는 휴로틱스!",
+    title: "신속한 A/S는 물론 고객 만족을\n최고의 가치로 삼는 휴로보틱스!",
     videoUrl: "./videos/LIBERTY_CC1.mp4",
   },
   {
@@ -28,23 +29,20 @@ const HeroSection: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const [isManualSwitch, setIsManualSwitch] = useState(false);
-
-  // ✅ 줄간 조절: 숫자만 바꿔도 바로 반영됨
-  const lineHeightValue = 1.6; // ← 줄간 (예: 1.2=좁게 / 1.4=기본 / 1.6=넓게 / 1.8=아주 넓게)
+  const total = heroVideos.length;
+  const lineHeightValue = 1.6;
 
   const nextSlide = () => {
     setIsManualSwitch(true);
-    setCurrentSlide((p) => (p === heroVideos.length - 1 ? 0 : p + 1));
+    setCurrentSlide((p) => (p === total - 1 ? 0 : p + 1));
   };
-
   const prevSlide = () => {
     setIsManualSwitch(true);
-    setCurrentSlide((p) => (p === 0 ? heroVideos.length - 1 : p - 1));
+    setCurrentSlide((p) => (p === 0 ? total - 1 : p - 1));
   };
 
   const handleEnded = () => {
-    if (!isManualSwitch)
-      setCurrentSlide((p) => (p === heroVideos.length - 1 ? 0 : p + 1));
+    if (!isManualSwitch) setCurrentSlide((p) => (p === total - 1 ? 0 : p + 1));
   };
 
   useEffect(() => {
@@ -56,35 +54,40 @@ const HeroSection: React.FC = () => {
     videoRefs.current.forEach((v, i) => {
       if (!v) return;
       if (i === currentSlide) {
-        v.currentTime = 0;
-        v.play().catch(() => {});
+        try {
+          v.currentTime = 0;
+          v.play().catch(() => {});
+        } catch {}
       } else {
-        v.pause();
+        try {
+          v.pause();
+        } catch {}
       }
     });
   }, [currentSlide]);
 
   return (
-    <section className="relative h-screen w-full overflow-hidden text-white transition-all duration-700">
+    <section className="relative h-screen w-full overflow-hidden text-white">
       {heroVideos.map((slide, i) => (
         <video
           key={slide.id}
-          ref={(el: HTMLVideoElement | null) => {
+          ref={(el) => {
             videoRefs.current[i] = el;
           }}
           src={slide.videoUrl}
           muted
           playsInline
+          preload="none"
           autoPlay={i === currentSlide}
           onEnded={handleEnded}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-            i === currentSlide ? "opacity-100" : "opacity-0"
+            i === currentSlide ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         />
       ))}
 
       <div className="absolute inset-0 bg-black/50 z-10" />
-      <div className="relative w-full h-full flex flex-col items-center justify-center text-center px-6 z-20">
+      <div className="relative flex flex-col items-center justify-center h-full text-center px-6 z-20">
         <h1
           className="text-2xl md:text-4xl lg:text-5xl font-bold whitespace-pre-line font-paperlogi drop-shadow-[0_4px_6px_rgba(0,0,0,0.4)] max-w-5xl"
           style={{ lineHeight: lineHeightValue }}
@@ -117,6 +120,7 @@ const HeroSection: React.FC = () => {
             className={`w-3 h-3 rounded-full transition-colors duration-300 ${
               currentSlide === i ? "bg-white" : "bg-white/50"
             }`}
+            aria-label={`slide-${i + 1}`}
           />
         ))}
       </div>
@@ -125,7 +129,7 @@ const HeroSection: React.FC = () => {
 };
 
 /* =========================
-   PRODUCTS Section (스크롤반응 제거)
+   PRODUCTS Section
 ========================= */
 const ShowcaseProductsSection: React.FC<{
   onProductSelect: (product: Product) => void;
@@ -135,7 +139,19 @@ const ShowcaseProductsSection: React.FC<{
     useState<(typeof categories)[number]>("청소로봇");
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const filtered = PRODUCTS.filter((p) => p.category === activeCategory);
+  const AVAILABLE_PRODUCT_IDS = useMemo(
+    () => new Set(["MT1", "CC1", "SH1", "T300"]),
+    []
+  );
+
+  const filtered = useMemo(
+    () =>
+      PRODUCTS.filter(
+        (p) => p.category === activeCategory && AVAILABLE_PRODUCT_IDS.has(p.id)
+      ),
+    [activeCategory, AVAILABLE_PRODUCT_IDS]
+  );
+
   const hasCarousel = filtered.length > 0;
 
   const handlePrev = () =>
@@ -199,11 +215,13 @@ const ShowcaseProductsSection: React.FC<{
                       ? "opacity-100 scale-100"
                       : "opacity-0 scale-95 pointer-events-none"
                   }`}
+                  style={{ willChange: "transform, opacity" }}
                 >
                   <div className="flex flex-col items-center">
                     <img
                       src={p.imageUrl}
                       alt={p.name}
+                      loading="lazy"
                       className="h-80 object-contain cursor-pointer"
                       onClick={() => i === currentIndex && onProductSelect(p)}
                     />
@@ -230,26 +248,63 @@ const ShowcaseProductsSection: React.FC<{
 };
 
 /* =========================
-   SOLUTION Section (디자인 유지 + 스크롤반응 X)
+   SOLUTION Section (최적화 완료)
 ========================= */
 const SolutionSection: React.FC = () => {
   const [selected, setSelected] = useState(0);
-  const active = SOLUTIONS[selected];
+  const [direction, setDirection] = useState<"left" | "right">("right");
+  const prevIndex = useRef(0);
+
+  // ✅ 이미지 미리 로드
+  useEffect(() => {
+    SOLUTIONS.forEach((sol) => {
+      const img = new Image();
+      img.src = sol.imageUrl;
+    });
+  }, []);
+
+  const handleSelect = (index: number) => {
+    if (index === selected) return;
+    setDirection(index > prevIndex.current ? "right" : "left");
+    prevIndex.current = index;
+    setSelected(index);
+  };
 
   return (
-    <section className="relative bg-slate-100 py-0 min-h-[100vh] flex flex-col justify-center overflow-hidden">
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: `url(${active.imageUrl})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          filter: "brightness(0.9)",
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-100/60 via-slate-100/40 to-transparent" />
+    <section
+      className="relative bg-slate-100 py-0 min-h-[100vh] flex flex-col justify-center overflow-hidden"
+      style={{
+        contain: "layout paint",
+        willChange: "transform, opacity",
+        transform: "translateZ(0)",
+      }}
+    >
+      {/* ✅ 배경 이미지 (전환 렉 최소화) */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {SOLUTIONS.map((sol, i) => (
+          <div
+            key={sol.id}
+            className={`absolute inset-0 w-full h-full transition-transform transition-opacity duration-500 ease-out ${
+              i === selected
+                ? "opacity-100 translate-x-0"
+                : direction === "right"
+                ? "opacity-0 translate-x-10"
+                : "opacity-0 -translate-x-10"
+            }`}
+            style={{
+              backgroundImage: `url(${sol.imageUrl})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              filter: "brightness(0.9)",
+              willChange: "transform, opacity, filter",
+              transform: "translateZ(0)",
+            }}
+          />
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-100/70 via-slate-100/50 to-transparent" />
       </div>
 
+      {/* ✅ 본문 */}
       <div className="relative z-10 container mx-auto px-4 text-center select-none mt-10">
         <h2 className="text-4xl md:text-5xl font-paperlogi font-bold text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)] mb-2">
           SOLUTION
@@ -258,12 +313,12 @@ const SolutionSection: React.FC = () => {
           다양한 산업 분야를 위한 최적의 솔루션
         </p>
 
-        <div className="mt-12 max-w-3xl mx-auto bg-white/60 backdrop-blur-md p-6 rounded-xl shadow-lg">
+        <div className="mt-12 max-w-3xl mx-auto bg-white/60 backdrop-blur-md p-6 rounded-xl shadow-lg transition-transform duration-500">
           <h3 className="text-4xl md:text-5xl font-bold mb-6 text-[#175689]">
-            {active.name}
+            {SOLUTIONS[selected].name}
           </h3>
           <ul className="text-left text-slate-700 space-y-3">
-            {active.description.map((d, i) => (
+            {SOLUTIONS[selected].description.map((d, i) => (
               <li key={i} className="flex items-start text-base md:text-lg">
                 <svg
                   className="w-6 h-6 text-[#175689] mr-3"
@@ -284,12 +339,13 @@ const SolutionSection: React.FC = () => {
           </ul>
         </div>
 
+        {/* ✅ 버튼 영역 (GPU 가속 + 부드러운 전환) */}
         <div className="mt-12 flex justify-center flex-wrap gap-4 mb-10">
           {SOLUTIONS.map((sol, i) => (
             <button
               key={sol.id}
-              onClick={() => setSelected(i)}
-              className={`flex flex-col items-center transition-all duration-300 ${
+              onClick={() => handleSelect(i)}
+              className={`flex flex-col items-center transition-transform duration-300 will-change-transform ${
                 selected === i ? "scale-110" : "hover:scale-105"
               }`}
             >
@@ -303,11 +359,12 @@ const SolutionSection: React.FC = () => {
                 <img
                   src={sol.imageUrl}
                   alt={sol.name}
+                  loading="lazy"
                   className="w-full h-full object-cover rounded-full"
                 />
               </div>
               <span
-                className={`mt-2 text-sm font-semibold transition-all duration-300 ${
+                className={`mt-2 text-sm font-semibold transition-colors duration-300 ${
                   selected === i
                     ? "text-[#175689]"
                     : "text-white hover:text-white/90"
@@ -322,6 +379,7 @@ const SolutionSection: React.FC = () => {
     </section>
   );
 };
+
 
 /* =========================
    Contact Section
@@ -343,7 +401,7 @@ const ContactSection: React.FC<{ onNavigate: (page: PageId) => void }> = ({
         휴로보틱스는 항상 고객의 목소리에 귀 기울이고 있습니다.
       </p>
       <button
-        onClick={() => onNavigate("inquiry")}
+        onClick={() => onNavigate("support")}
         className="mt-8 px-10 py-3 bg-white text-[#175689] font-bold rounded-full text-lg hover:bg-slate-200 transition-all duration-300 transform hover:scale-105"
       >
         문의하기
@@ -353,7 +411,7 @@ const ContactSection: React.FC<{ onNavigate: (page: PageId) => void }> = ({
 );
 
 /* =========================
-   HomePage 전체 구성
+   HomePage 구성
 ========================= */
 const HomePage: React.FC<{
   onProductSelect: (product: Product) => void;

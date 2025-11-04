@@ -6,10 +6,10 @@ import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
-import SolutionsPage from "./pages/SolutionsPage";
-import RentalPage from "./pages/RentalPage";
-import SupportPage from "./pages/SupportPage";
-import InquiryPage from "./pages/InquiryPage";
+import RentalPage from "./pages/RentalPage";   // ✅ 체험신청
+import ASPage from "./pages/ASPage";           // ✅ A/S신청
+import CasesPage from "./pages/CasesPage";     // ✅ 도입사례
+import SupportPage from "./pages/SupportPage"; // ✅ 고객지원
 import type { Product, PageId } from "./types";
 
 const App: React.FC = () => {
@@ -35,7 +35,7 @@ const App: React.FC = () => {
     setCurrentPage("product");
   };
 
-  // ✅ 렌더링 함수
+  // ✅ 페이지 렌더링
   const renderPage = () => {
     switch (currentPage) {
       case "home":
@@ -54,23 +54,23 @@ const App: React.FC = () => {
           <ProductDetailPage
             product={selectedProduct}
             onBack={() => handleNavigate("products")}
-            onNavigate={handleNavigate} // ✅ 추가: 체험신청 버튼 동작용
+            onNavigate={handleNavigate}
           />
         ) : (
           <ProductsPage onProductSelect={handleProductSelect} />
         );
 
-      case "solutions":
-        return <SolutionsPage />;
+      case "experience":
+        return <RentalPage />; // ✅ 체험신청
 
-      case "rental":
-        return <RentalPage />;
+      case "as":
+        return <ASPage />; // ✅ A/S신청
 
-      case "inquiry":
-        return <InquiryPage />;
+      case "cases":
+        return <CasesPage />; // ✅ 도입사례 (Solutions 대체)
 
       case "support":
-        return <SupportPage />;
+        return <SupportPage />; // ✅ 고객지원 (문의 등 포함)
 
       default:
         return (
@@ -84,13 +84,13 @@ const App: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* ✅ 고정 Header */}
+      {/* ✅ 고정 헤더 */}
       <Header currentPage={currentPage} onNavigate={handleNavigate} />
 
       {/* ✅ 메인 콘텐츠 */}
       <main className="flex-grow">{renderPage()}</main>
 
-      {/* ✅ Footer */}
+      {/* ✅ 푸터 */}
       <Footer />
     </div>
   );

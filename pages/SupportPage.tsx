@@ -5,28 +5,15 @@ import ResourcesList from "./ResourcesList";
 import ResourceDetail from "./ResourceDetail";
 
 const SupportPage: React.FC = () => {
-  const tabs = ["A/S문의", "파트너십", "자료실", "자주묻는질문"];
-  const [activeTab, setActiveTab] = useState("A/S문의");
+  // ✅ 탭 구성: A/S문의, 파트너십 제거 → 자료실 / FAQ / 문의하기
+  const tabs = ["자료실", "FAQ", "문의하기"];
+  const [activeTab, setActiveTab] = useState("문의하기");
   const [selectedResourceId, setSelectedResourceId] = useState<number | null>(null);
 
   const handleBackToList = () => setSelectedResourceId(null);
 
   const renderContent = () => {
     switch (activeTab) {
-      case "A/S문의":
-        return (
-          <div className="py-10">
-            <InquiryForm />
-          </div>
-        );
-
-      case "파트너십":
-        return (
-          <div className="py-10">
-            <InquiryForm />
-          </div>
-        );
-
       case "자료실":
         return (
           <div className="py-10">
@@ -44,10 +31,17 @@ const SupportPage: React.FC = () => {
           </div>
         );
 
-      case "자주묻는질문":
+      case "FAQ":
         return (
           <div className="text-center py-10 text-gray-600 text-lg">
-            FAQ 페이지 준비 중입니다.
+            자주 묻는 질문(FAQ) 페이지는 준비 중입니다.
+          </div>
+        );
+
+      case "문의하기":
+        return (
+          <div className="py-10">
+            <InquiryForm />
           </div>
         );
 
@@ -71,7 +65,7 @@ const SupportPage: React.FC = () => {
             key={tab}
             onClick={() => {
               setActiveTab(tab);
-              setSelectedResourceId(null); // 자료실 상세에서 나올 때 탭 전환 초기화
+              setSelectedResourceId(null); // 자료실 상세 → 탭 이동 시 초기화
             }}
             className={`px-6 py-2 rounded-full font-semibold transition ${
               activeTab === tab

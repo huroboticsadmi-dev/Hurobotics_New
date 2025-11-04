@@ -1,57 +1,48 @@
 // components/VideoSection.tsx
 import React from "react";
+import { FaYoutube } from "react-icons/fa";
 
 const VideoSection: React.FC = () => {
-  // 아직 업로드된 유튜브 영상이 없을 때 false로 유지
-  const hasVideo = false;
-  const youtubeUrl = "https://www.youtube.com/embed/"; // 영상 등록 시 ID만 붙이면 됨 (예: .../embed/abc123)
+  const youtubeChannel = "https://www.youtube.com/@Hurobotics";
+
+  const videos = [
+    "https://www.youtube.com/embed/vh0EkijmmJ8",
+    "https://www.youtube.com/embed/8Dv48RjNuaw",
+    "https://www.youtube.com/embed/1E2_yozoLGI",
+  ];
 
   return (
-    <section className="py-20 bg-white text-center">
-      {/* 섹션 타이틀 */}
-      <h2 className="text-5xl font-bold font-paperlogi text-[#175689] mb-10">
-        HuRobotics 영상 ❤️
+    <section className="py-20 bg-gradient-to-b from-slate-50 to-slate-100 text-center">
+      {/* 타이틀 */}
+      <h2 className="text-5xl font-bold font-paperlogi text-[#175689] mb-10 flex items-center justify-center gap-3">
+        HuRobotics 영상{" "}
+        <a
+          href={youtubeChannel}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#FF0000] hover:scale-110 transition-transform duration-300"
+          aria-label="HuRobotics YouTube Channel"
+        >
+          <FaYoutube className="text-5xl" />
+        </a>
       </h2>
 
-      {/* 영상 영역 */}
-      <div className="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-slate-50">
-        {hasVideo ? (
-          <iframe
-            className="w-full h-[500px]"
-            src={youtubeUrl}
-            title="HuRobotics YouTube Video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-[400px] bg-slate-100">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="#175689"
-              className="w-20 h-20 mb-4 opacity-70"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 10.5l-6 3.75V6.75l6 3.75z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <p className="text-slate-600 text-lg font-semibold">
-              아직 업로드된 영상이 없습니다.
-            </p>
-            <p className="text-slate-500 mt-2 text-sm">
-              곧 HuRobotics 공식 영상을 만나보실 수 있습니다.
-            </p>
+      {/* 영상 그리드 (쇼츠 비율 적용) */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+        {videos.map((url, i) => (
+          <div
+            key={i}
+            className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-white aspect-[9/16] flex items-center justify-center hover:scale-[1.02] transition-transform duration-300"
+          >
+            <iframe
+              className="w-full h-full"
+              src={`${url}?rel=0&autoplay=0`}
+              title={`HuRobotics Shorts ${i + 1}`}
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </div>
-        )}
+        ))}
       </div>
     </section>
   );

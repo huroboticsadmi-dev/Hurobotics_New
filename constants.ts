@@ -1,8 +1,9 @@
-import type { Page, Solution, Product, ProductCategory } from "./types";
+import type { Page, Product, ProductCategory, Solution } from "./types";
 
 // --- NAV_LINKS ---
 export const NAV_LINKS: Page[] = [
   { name: "홈", path: "/", pageId: "home" },
+
   {
     name: "제품소개",
     path: "/products",
@@ -14,30 +15,36 @@ export const NAV_LINKS: Page[] = [
       { name: "특수목적로봇", path: "/products/special", pageId: "products" },
     ],
   },
-  {
-    name: "솔루션",
-    path: "/solutions",
-    pageId: "solutions",
-    children: [
-      { name: "솔루션", path: "/solutions", pageId: "solutions" },
-      { name: "서비스 시스템", path: "/solutions/system", pageId: "solutions" },
-    ],
-  },
+
   {
     name: "체험신청",
-    path: "/rental", // ✅ 기존 demo → rental로 교체
-    pageId: "rental",
-    children: [{ name: "체험신청", path: "/rental", pageId: "rental" }],
+    path: "/experience",
+    pageId: "experience",
+    children: [{ name: "체험신청", path: "/experience", pageId: "experience" }],
   },
+
+  {
+    name: "A/S신청",
+    path: "/as",
+    pageId: "as",
+    children: [{ name: "A/S신청", path: "/as", pageId: "as" }],
+  },
+
+  {
+    name: "도입사례",
+    path: "/cases",
+    pageId: "cases",
+    children: [{ name: "도입사례", path: "/cases", pageId: "cases" }],
+  },
+
   {
     name: "고객지원",
-    path: "/inquiry",
-    pageId: "inquiry",
+    path: "/support",
+    pageId: "support",
     children: [
-      { name: "A/S 신청", path: "/inquiry/service", pageId: "inquiry" },
-      { name: "파트너십", path: "/inquiry/partner", pageId: "inquiry" },
-      { name: "자료실", path: "/inquiry/resources", pageId: "inquiry" },
-      { name: "자주 묻는 질문", path: "/inquiry/faq", pageId: "inquiry" },
+      { name: "자료실", path: "/support/resources", pageId: "support" },
+      { name: "자주 묻는 질문", path: "/support/faq", pageId: "support" },
+      { name: "문의하기", path: "/support/contact", pageId: "support" },
     ],
   },
 ];
@@ -96,7 +103,7 @@ export const PRODUCTS: Product[] = [
     category: "서빙로봇" as ProductCategory,
     descriptionPoints: ["빠르고 안전한 배송", "엘리베이터 연동 가능", "비접촉 서비스 제공"],
     type: "Delivery",
-    path: "/solutions",
+    path: "/products/delivery",
     isAvailable: false,
   },
   {
@@ -107,12 +114,12 @@ export const PRODUCTS: Product[] = [
     category: "특수목적로봇" as ProductCategory,
     descriptionPoints: ["맞춤형 기능 설계", "위험 구역 투입 가능", "고강도 내구성 확보"],
     type: "Special",
-    path: "/solutions",
+    path: "/products/special",
     isAvailable: false,
   },
 ];
 
-// --- SOLUTIONS ---
+// --- SOLUTIONS (기존 → 고객지원 사례 등에서 활용할 수도 있으므로 유지) ---
 export const SOLUTIONS: Solution[] = [
   {
     id: "sol-hotel",
@@ -123,7 +130,7 @@ export const SOLUTIONS: Solution[] = [
       "24시간 운영 가능한 무인 청소 시스템",
     ],
     imageUrl: "./images/Hotel_picture.jpg",
-    path: "/solutions/hotel",
+    path: "/cases/hotel",
   },
   {
     id: "sol-restaurant",
@@ -134,7 +141,7 @@ export const SOLUTIONS: Solution[] = [
       "피크 타임 인력 부담 완화",
     ],
     imageUrl: "./images/big_restaurant.jpg",
-    path: "/solutions/restaurant",
+    path: "/cases/restaurant",
   },
   {
     id: "sol-mart",
@@ -145,7 +152,7 @@ export const SOLUTIONS: Solution[] = [
       "고객 동선 최적화를 통한 효율적 관리",
     ],
     imageUrl: "./images/mart.jpg",
-    path: "/solutions/mart",
+    path: "/cases/mart",
   },
   {
     id: "sol-logistics",
@@ -156,7 +163,7 @@ export const SOLUTIONS: Solution[] = [
       "야간 무인 물류 운영 환경 구축",
     ],
     imageUrl: "./images/Logistics_Warehouse.jpg",
-    path: "/solutions/logistics",
+    path: "/cases/logistics",
   },
   {
     id: "sol-hospital",
@@ -167,7 +174,7 @@ export const SOLUTIONS: Solution[] = [
       "의료진 업무 부담 경감 및 감염 예방 강화",
     ],
     imageUrl: "./images/hospital_picture.jpg",
-    path: "/solutions/hospital",
+    path: "/cases/hospital",
   },
   {
     id: "sol-apartment",
@@ -178,7 +185,7 @@ export const SOLUTIONS: Solution[] = [
       "관리비 절감 및 쾌적한 환경 유지",
     ],
     imageUrl: "./images/underground_parking.jpg",
-    path: "/solutions/apartment",
+    path: "/cases/apartment",
   },
   {
     id: "sol-construction",
@@ -189,7 +196,7 @@ export const SOLUTIONS: Solution[] = [
       "작업자 안전 확보 및 환경 개선",
     ],
     imageUrl: "./images/Indoor_Building_Site.jpg",
-    path: "/solutions/construction",
+    path: "/cases/construction",
   },
   {
     id: "sol-education",
@@ -200,6 +207,6 @@ export const SOLUTIONS: Solution[] = [
       "정규 수업 외 시간대 자동 청소 운영",
     ],
     imageUrl: "./images/education.jpg",
-    path: "/solutions/education",
+    path: "/cases/education",
   },
 ];
