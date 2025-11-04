@@ -1,44 +1,10 @@
-// pages/HomePage.tsx
 import React, { useEffect, useRef, useState } from "react";
 import { PRODUCTS, SOLUTIONS } from "../constants";
 import type { Product, PageId } from "../types";
 import VideoSection from "../components/VideoSection";
 
 /* =========================
-   공용: 스크롤 페이드인 훅
-========================= */
-const useScrollFadeIn = () => {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(node);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
-  return {
-    ref,
-    className: `transition-all duration-[1200ms] ease-out transform ${
-      visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-    }`,
-  };
-};
-
-/* =========================
-   Hero Section (그대로)
+   Hero Section (줄간 조절 가능)
 ========================= */
 const heroVideos = [
   {
@@ -53,20 +19,24 @@ const heroVideos = [
   },
   {
     id: 3,
-    title: "성공적인\n스마트 팩토리 자동화를 위한 최고의 파트너!",
+    title: "성공적인 스마트 팩토리\n자동화를 위한 최고의 파트너!",
     videoUrl: "./videos/LIBERTY_T300.mp4",
   },
 ];
 
 const HeroSection: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const [isManualSwitch, setIsManualSwitch] = useState(false);
+
+  // ✅ 줄간 조절: 숫자만 바꿔도 바로 반영됨
+  const lineHeightValue = 1.6; // ← 줄간 (예: 1.2=좁게 / 1.4=기본 / 1.6=넓게 / 1.8=아주 넓게)
 
   const nextSlide = () => {
     setIsManualSwitch(true);
     setCurrentSlide((p) => (p === heroVideos.length - 1 ? 0 : p + 1));
   };
+
   const prevSlide = () => {
     setIsManualSwitch(true);
     setCurrentSlide((p) => (p === 0 ? heroVideos.length - 1 : p - 1));
@@ -88,7 +58,9 @@ const HeroSection: React.FC = () => {
       if (i === currentSlide) {
         v.currentTime = 0;
         v.play().catch(() => {});
-      } else v.pause();
+      } else {
+        v.pause();
+      }
     });
   }, [currentSlide]);
 
@@ -113,7 +85,10 @@ const HeroSection: React.FC = () => {
 
       <div className="absolute inset-0 bg-black/50 z-10" />
       <div className="relative w-full h-full flex flex-col items-center justify-center text-center px-6 z-20">
-        <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold whitespace-pre-line font-paperlogi drop-shadow-[0_4px_6px_rgba(0,0,0,0.4)] max-w-5xl">
+        <h1
+          className="text-2xl md:text-4xl lg:text-5xl font-bold whitespace-pre-line font-paperlogi drop-shadow-[0_4px_6px_rgba(0,0,0,0.4)] max-w-5xl"
+          style={{ lineHeight: lineHeightValue }}
+        >
           {heroVideos[currentSlide].title}
         </h1>
       </div>
@@ -150,15 +125,11 @@ const HeroSection: React.FC = () => {
 };
 
 /* =========================
-   PRODUCTS Section (복구)
-   - 디자인 유지
-   - 가벼운 캐러셀
+   PRODUCTS Section (스크롤반응 제거)
 ========================= */
 const ShowcaseProductsSection: React.FC<{
   onProductSelect: (product: Product) => void;
 }> = ({ onProductSelect }) => {
-  const fade = useScrollFadeIn();
-
   const categories = ["청소로봇", "물류로봇", "서빙로봇", "특수목적로봇"] as const;
   const [activeCategory, setActiveCategory] =
     useState<(typeof categories)[number]>("청소로봇");
@@ -167,25 +138,15 @@ const ShowcaseProductsSection: React.FC<{
   const filtered = PRODUCTS.filter((p) => p.category === activeCategory);
   const hasCarousel = filtered.length > 0;
 
-  const handlePrev = () => {
-    if (!hasCarousel) return;
-    setCurrentIndex((p) => (p - 1 + filtered.length) % filtered.length);
-  };
-  const handleNext = () => {
-    if (!hasCarousel) return;
-    setCurrentIndex((p) => (p + 1) % filtered.length);
-  };
+  const handlePrev = () =>
+    hasCarousel && setCurrentIndex((p) => (p - 1 + filtered.length) % filtered.length);
+  const handleNext = () =>
+    hasCarousel && setCurrentIndex((p) => (p + 1) % filtered.length);
 
-  // 카테고리 바꾸면 인덱스 리셋
-  useEffect(() => {
-    setCurrentIndex(0);
-  }, [activeCategory]);
+  useEffect(() => setCurrentIndex(0), [activeCategory]);
 
   return (
-    <section
-      ref={fade.ref}
-      className={`${fade.className} relative py-20 bg-white overflow-hidden`}
-    >
+    <section className="relative py-20 bg-white overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-5xl font-bold font-paperlogi text-slate-800">
           PRODUCTS
@@ -194,7 +155,6 @@ const ShowcaseProductsSection: React.FC<{
           생산성과 효율성을 높이는 혁신적 로봇 기술
         </p>
 
-        {/* 카테고리 탭 */}
         <div className="mt-8 inline-flex bg-gray-100 rounded-full p-1">
           {categories.map((c) => (
             <button
@@ -211,7 +171,6 @@ const ShowcaseProductsSection: React.FC<{
           ))}
         </div>
 
-        {/* 캐러셀 영역 */}
         <div className="relative mt-10 min-h-[520px] flex items-center justify-center">
           {!hasCarousel ? (
             <div className="py-24 text-slate-600">
@@ -219,80 +178,49 @@ const ShowcaseProductsSection: React.FC<{
             </div>
           ) : (
             <>
-              {/* 좌우 버튼 */}
               <button
                 onClick={handlePrev}
-                className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-20 p-2 bg-[#175689]/20 rounded-full shadow hover:bg-[#175689]/40"
-                aria-label="prev product"
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 bg-[#175689]/20 rounded-full shadow hover:bg-[#175689]/40"
               >
-                <svg
-                  className="w-6 h-6 text-[#175689]"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
+                ◀
               </button>
               <button
                 onClick={handleNext}
-                className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-20 p-2 bg-[#175689]/20 rounded-full shadow hover:bg-[#175689]/40"
-                aria-label="next product"
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 bg-[#175689]/20 rounded-full shadow hover:bg-[#175689]/40"
               >
-                <svg
-                  className="w-6 h-6 text-[#175689]"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+                ▶
               </button>
 
-              {/* 현재 카드 */}
-              <div className="w-full max-w-4xl mx-auto">
-                {filtered.map((p, i) => {
-                  const isActive = i === currentIndex;
-                  return (
-                    <div
-                      key={p.id}
-                      className={`transition-all duration-500 ${
-                        isActive ? "opacity-100 scale-100" : "hidden opacity-0"
-                      }`}
-                    >
-                      <div className="flex flex-col items-center">
-                        <img
-                          src={p.imageUrl}
-                          alt={p.name}
-                          className="h-80 object-contain cursor-pointer"
-                          onClick={() => isActive && onProductSelect({ ...p })}
-                        />
-                        <h3 className="text-3xl font-bold mt-4">{p.title}</h3>
-                        {p.name !== p.title && (
-                          <p className="text-slate-700 text-lg font-semibold">
-                            {p.name}
-                          </p>
-                        )}
-                        <ul className="mt-2 text-slate-600">
-                          {p.descriptionPoints.map((pt, idx) => (
-                            <li key={idx}>{pt}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              {filtered.map((p, i) => (
+                <div
+                  key={p.id}
+                  className={`absolute w-full transition-all duration-500 ${
+                    i === currentIndex
+                      ? "opacity-100 scale-100"
+                      : "opacity-0 scale-95 pointer-events-none"
+                  }`}
+                >
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={p.imageUrl}
+                      alt={p.name}
+                      className="h-80 object-contain cursor-pointer"
+                      onClick={() => i === currentIndex && onProductSelect(p)}
+                    />
+                    <h3 className="text-3xl font-bold mt-4">{p.title}</h3>
+                    {p.name !== p.title && (
+                      <p className="text-slate-700 text-lg font-semibold">
+                        {p.name}
+                      </p>
+                    )}
+                    <ul className="mt-2 text-slate-600">
+                      {p.descriptionPoints.map((pt, idx) => (
+                        <li key={idx}>{pt}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ))}
             </>
           )}
         </div>
@@ -302,62 +230,31 @@ const ShowcaseProductsSection: React.FC<{
 };
 
 /* =========================
-   Solution Section (렉 제로)
+   SOLUTION Section (디자인 유지 + 스크롤반응 X)
 ========================= */
 const SolutionSection: React.FC = () => {
-  const fade = useScrollFadeIn();
   const [selected, setSelected] = useState(0);
   const active = SOLUTIONS[selected];
-  const bgRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    let throttleId: number | null = null;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (throttleId) return;
-      throttleId = window.setTimeout(() => {
-        throttleId = null;
-      }, 16); // 60fps 제한
-
-      const { innerWidth, innerHeight } = window;
-      const x = (e.clientX / innerWidth - 0.5) * 20;
-      const y = (e.clientY / innerHeight - 0.5) * 20;
-
-      if (bgRef.current) {
-        bgRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-      }
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
   return (
-    <section
-      ref={fade.ref}
-      className={`${fade.className} relative bg-slate-100 py-20 min-h-[100vh] flex flex-col justify-between overflow-hidden`}
-    >
+    <section className="relative bg-slate-100 py-0 min-h-[100vh] flex flex-col justify-center overflow-hidden">
       <div
-        ref={bgRef}
-        className="absolute inset-0 z-0 will-change-transform transition-transform duration-200 ease-out"
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: `url(${active.imageUrl})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "brightness(0.9)",
+        }}
       >
-        {SOLUTIONS.map((s, i) => (
-          <div
-            key={s.id}
-            className={`absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-700 ${
-              selected === i ? "opacity-100" : "opacity-0"
-            }`}
-            style={{ backgroundImage: `url(${s.imageUrl})` }}
-          />
-        ))}
         <div className="absolute inset-0 bg-gradient-to-t from-slate-100/60 via-slate-100/40 to-transparent" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 text-center select-none">
-        <h2 className="text-4xl md:text-5xl font-paperlogi font-bold text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]">
+      <div className="relative z-10 container mx-auto px-4 text-center select-none mt-10">
+        <h2 className="text-4xl md:text-5xl font-paperlogi font-bold text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)] mb-2">
           SOLUTION
         </h2>
-        <p className="mt-4 text-lg text-white/90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+        <p className="text-lg text-white/90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
           다양한 산업 분야를 위한 최적의 솔루션
         </p>
 
@@ -387,7 +284,7 @@ const SolutionSection: React.FC = () => {
           </ul>
         </div>
 
-        <div className="mt-12 flex justify-center flex-wrap gap-4">
+        <div className="mt-12 flex justify-center flex-wrap gap-4 mb-10">
           {SOLUTIONS.map((sol, i) => (
             <button
               key={sol.id}
@@ -427,38 +324,36 @@ const SolutionSection: React.FC = () => {
 };
 
 /* =========================
-   Contact Section (그대로)
+   Contact Section
 ========================= */
 const ContactSection: React.FC<{ onNavigate: (page: PageId) => void }> = ({
   onNavigate,
-}) => {
-  const fade = useScrollFadeIn();
-  return (
-    <section
-      ref={fade.ref}
-      className={`${fade.className} relative py-24 bg-cover bg-center bg-fixed`}
-      style={{ backgroundImage: "url('./images/advice.jpg')" }}
-    >
-      <div className="absolute inset-0 bg-[#175689] opacity-80" />
-      <div className="relative container mx-auto px-4 text-center text-white">
-        <h2 className="text-4xl md:text-5xl font-paperlogi font-bold">CONTACT</h2>
-        <p className="mt-4 text-xl max-w-3xl mx-auto">
-          궁금한 점이 있으신가요? 언제든지 문의해주세요. <br />
-          휴로보틱스는 항상 고객의 목소리에 귀 기울이고 있습니다.
-        </p>
-        <button
-          onClick={() => onNavigate("inquiry")}
-          className="mt-8 px-10 py-3 bg-white text-[#175689] font-bold rounded-full text-lg hover:bg-slate-200 transition-all duration-300 transform hover:scale-105"
-        >
-          문의하기
-        </button>
-      </div>
-    </section>
-  );
-};
+}) => (
+  <section
+    className="relative py-24 bg-cover bg-center bg-fixed"
+    style={{ backgroundImage: "url('./images/advice.jpg')" }}
+  >
+    <div className="absolute inset-0 bg-[#175689] opacity-80" />
+    <div className="relative container mx-auto px-4 text-center text-white">
+      <h2 className="text-4xl md:text-5xl font-paperlogi font-bold">
+        CONTACT
+      </h2>
+      <p className="mt-4 text-xl max-w-3xl mx-auto">
+        궁금한 점이 있으신가요? 언제든지 문의해주세요. <br />
+        휴로보틱스는 항상 고객의 목소리에 귀 기울이고 있습니다.
+      </p>
+      <button
+        onClick={() => onNavigate("inquiry")}
+        className="mt-8 px-10 py-3 bg-white text-[#175689] font-bold rounded-full text-lg hover:bg-slate-200 transition-all duration-300 transform hover:scale-105"
+      >
+        문의하기
+      </button>
+    </div>
+  </section>
+);
 
 /* =========================
-   HomePage (전체 구성)
+   HomePage 전체 구성
 ========================= */
 const HomePage: React.FC<{
   onProductSelect: (product: Product) => void;
