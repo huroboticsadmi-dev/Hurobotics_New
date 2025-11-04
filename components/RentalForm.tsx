@@ -95,7 +95,7 @@ const RentalForm: React.FC = () => {
         className="bg-white rounded-2xl shadow-xl p-8 md:p-12 max-w-2xl w-full border border-slate-200"
       >
         <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-[#175689] font-paperlogi">
-          시연 신청 폼
+          시연 신청
         </h2>
 
         {/* 회사명 */}

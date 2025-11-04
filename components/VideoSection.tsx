@@ -3,41 +3,46 @@ import React from "react";
 import { FaYoutube } from "react-icons/fa";
 
 const VideoSection: React.FC = () => {
-  const youtubeChannel = "https://www.youtube.com/@Hurobotics";
-
   const videos = [
-    "https://www.youtube.com/embed/vh0EkijmmJ8",
-    "https://www.youtube.com/embed/8Dv48RjNuaw",
+    "https://www.youtube.com/embed/h4AW9qIxi2s",
     "https://www.youtube.com/embed/1E2_yozoLGI",
+    "https://www.youtube.com/embed/awZhLrbR0M0",
+    "https://www.youtube.com/embed/5NcvUFIn6J8",
   ];
 
+  const youtubeChannel = "https://www.youtube.com/@Hurobotics";
+
   return (
-    <section className="py-20 bg-gradient-to-b from-slate-50 to-slate-100 text-center">
-      {/* 타이틀 */}
-      <h2 className="text-5xl font-bold font-paperlogi text-[#175689] mb-10 flex items-center justify-center gap-3">
-        HuRobotics 영상{" "}
+    <section className="py-20 bg-slate-50 text-center">
+      {/* 타이틀 (아이콘 제거됨) */}
+      <h2 className="text-5xl font-bold font-paperlogi text-[#175689] mb-4">
+        HuRobotics 영상
+      </h2>
+
+      {/* 공식 유튜브 주소 */}
+      <div className="flex items-center justify-center gap-2 mb-10 text-[#175689] text-lg font-medium">
+        <FaYoutube className="text-[#FF0000] text-2xl" />
         <a
           href={youtubeChannel}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#FF0000] hover:scale-110 transition-transform duration-300"
-          aria-label="HuRobotics YouTube Channel"
+          className="underline hover:text-[#144d74] transition-colors duration-200"
         >
-          <FaYoutube className="text-5xl" />
+          {youtubeChannel}
         </a>
-      </h2>
+      </div>
 
-      {/* 영상 그리드 (쇼츠 비율 적용) */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
-        {videos.map((url, i) => (
+      {/* 영상 리스트 */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
+        {videos.map((url, index) => (
           <div
-            key={i}
-            className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-white aspect-[9/16] flex items-center justify-center hover:scale-[1.02] transition-transform duration-300"
+            key={index}
+            className="aspect-[9/16] bg-black rounded-2xl overflow-hidden shadow-lg border border-slate-200"
           >
             <iframe
               className="w-full h-full"
-              src={`${url}?rel=0&autoplay=0`}
-              title={`HuRobotics Shorts ${i + 1}`}
+              src={`${url}?rel=0`}
+              title={`HuRobotics Video ${index + 1}`}
               allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe>
