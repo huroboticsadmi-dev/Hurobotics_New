@@ -62,17 +62,25 @@ const VideoSection: React.FC = () => {
         </div>
       </div>
 
-      {/* ✅ 롱폼 영상 섹션 (1개만 표시됨) */}
+      {/* ✅ 롱폼 영상 섹션 (1개 → 중앙 정렬) */}
       <div className="max-w-6xl mx-auto px-4">
         <h3 className="text-3xl font-bold text-[#175689] mb-8">
           롱폼 영상 (Long-form)
         </h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div
+          className={`
+            grid gap-6 
+            ${longformVideos.length === 1 
+              ? "grid-cols-1 justify-items-center"   /* ✅ 중앙 정렬 */
+              : "grid-cols-1 sm:grid-cols-2"
+            }
+          `}
+        >
           {longformVideos.map((url, index) => (
             <div
               key={index}
-              className="aspect-video bg-black rounded-2xl overflow-hidden shadow-lg border border-slate-200"
+              className="aspect-video bg-black rounded-2xl overflow-hidden shadow-lg border border-slate-200 w-full max-w-3xl"
             >
               <iframe
                 className="w-full h-full"
