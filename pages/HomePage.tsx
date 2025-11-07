@@ -139,8 +139,9 @@ const ShowcaseProductsSection: React.FC<{
     useState<(typeof categories)[number]>("청소로봇");
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // ✅ 여기 PHANTAS 추가됨
   const AVAILABLE_PRODUCT_IDS = useMemo(
-    () => new Set(["MT1", "CC1", "SH1", "T300"]),
+    () => new Set(["MT1", "CC1", "SH1", "PHANTAS", "T300"]),
     []
   );
 
@@ -248,14 +249,13 @@ const ShowcaseProductsSection: React.FC<{
 };
 
 /* =========================
-   SOLUTION Section (최적화 완료)
+   SOLUTION Section
 ========================= */
 const SolutionSection: React.FC = () => {
   const [selected, setSelected] = useState(0);
   const [direction, setDirection] = useState<"left" | "right">("right");
   const prevIndex = useRef(0);
 
-  // ✅ 이미지 미리 로드
   useEffect(() => {
     SOLUTIONS.forEach((sol) => {
       const img = new Image();
@@ -279,7 +279,6 @@ const SolutionSection: React.FC = () => {
         transform: "translateZ(0)",
       }}
     >
-      {/* ✅ 배경 이미지 (전환 렉 최소화) */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {SOLUTIONS.map((sol, i) => (
           <div
@@ -304,7 +303,6 @@ const SolutionSection: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-100/70 via-slate-100/50 to-transparent" />
       </div>
 
-      {/* ✅ 본문 */}
       <div className="relative z-10 container mx-auto px-4 text-center select-none mt-10">
         <h2 className="text-4xl md:text-5xl font-paperlogi font-bold text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)] mb-2">
           SOLUTION
@@ -339,7 +337,6 @@ const SolutionSection: React.FC = () => {
           </ul>
         </div>
 
-        {/* ✅ 버튼 영역 (GPU 가속 + 부드러운 전환) */}
         <div className="mt-12 flex justify-center flex-wrap gap-4 mb-10">
           {SOLUTIONS.map((sol, i) => (
             <button
@@ -379,7 +376,6 @@ const SolutionSection: React.FC = () => {
     </section>
   );
 };
-
 
 /* =========================
    Contact Section

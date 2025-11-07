@@ -1,16 +1,14 @@
 // hurobotics-main/types.ts
 
 export type PageId =
-  | 'home'
-  | 'products'
-  | 'product'   // ✅ 상세 페이지
-  | 'solutions'
-  | 'company'
-  | 'inquiry'
-  | 'about'
-  | 'rental'    // ✅ 체험문의 추가!
-  | 'support'  // ✅ 지원센터(고객지원) 페이지 추가!
-  | 'ASPage';
+  | "home"
+  | "products"
+  | "product"
+  | "experience" // 체험신청
+  | "as"         // A/S신청
+  | "cases"      // 도입사례
+  | "support";   // 고객지원
+
 
 export interface Page {
   name: string;

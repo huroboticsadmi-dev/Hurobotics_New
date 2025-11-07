@@ -7,12 +7,12 @@ const VideoSection: React.FC = () => {
 
   // ✅ 롱폼 영상 (지금은 1개만 표시)
   const longformVideos = [
-    "https://www.youtube.com/embed/h4AW9qIxi2s",
+    "https://www.youtube.com/embed/DnOnyuQRQcw",
   ];
 
   // ✅ 숏폼 영상 (여러 개 유지)
   const shortsVideos = [
-    "https://www.youtube.com/embed/h4AW9qIxi2s",
+    "https://www.youtube.com/embed/xmTUQOh9ZgI",
     "https://www.youtube.com/embed/1E2_yozoLGI",
     "https://www.youtube.com/embed/awZhLrbR0M0",
     "https://www.youtube.com/embed/5NcvUFIn6J8",

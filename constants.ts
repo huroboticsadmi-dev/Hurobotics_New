@@ -84,6 +84,24 @@ export const PRODUCTS: Product[] = [
     path: "/product/SH1",
     isAvailable: true,
   },
+
+  // ✅ ✅ ✅ 새 제품 추가됨 (PHANTAS)
+  {
+    id: "PHANTAS",
+    title: "LIBERTY PHANTAS",
+    name: "AI 기반 올인원 스마트 청소 로봇",
+    imageUrl: "./images/LIBERTY_Phantas.png",
+    category: "청소로봇" as ProductCategory,
+    descriptionPoints: [
+      "4-in-1 프리미엄 청소(스위핑·스크러빙·진공·모핑)",
+      "최신 AI 기반 자율주행",
+      "대형 시설 최적화 설계",
+    ],
+    type: "Cleaner",
+    path: "/product/PHANTAS",
+    isAvailable: true,
+  },
+
   {
     id: "T300",
     title: "LIBERTY T300",
@@ -119,7 +137,7 @@ export const PRODUCTS: Product[] = [
   },
 ];
 
-// --- SOLUTIONS (기존 → 고객지원 사례 등에서 활용할 수도 있으므로 유지) ---
+// --- SOLUTIONS ---
 export const SOLUTIONS: Solution[] = [
   {
     id: "sol-hotel",
