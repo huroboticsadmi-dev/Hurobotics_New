@@ -56,7 +56,9 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative flex items-center h-20">
+          <div className="relative flex items-center h-20 pl-44 pr-16">
+
+            {/* 로고 */}
             <div className="absolute left-0 flex-shrink-0">
               <button
                 onClick={() => {
@@ -75,8 +77,10 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
               </button>
             </div>
 
+            {/* ✅ flex-wrap + gap-x + gap-y 적용 */}
+            {/* ✅ 줄바꿈 되게 하려면 space-x 제거해야 함 */}
             <nav
-              className="hidden md:flex mx-auto items-center justify-center space-x-10"
+              className="hidden md:flex flex-wrap mx-auto items-center justify-center gap-x-10 gap-y-2"
               onMouseEnter={() => setIsMenuVisible(true)}
             >
               {TOP_LINKS.map((link) => (
@@ -98,6 +102,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
               ))}
             </nav>
 
+            {/* 모바일 아이콘 */}
             <div className="absolute right-0 md:hidden flex items-center">
               <button
                 onClick={() => setIsMobileMenuOpen((v) => !v)}
@@ -127,7 +132,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
         onClick={() => setIsMobileMenuOpen(false)}
       />
 
-      {/* ✅ 모바일 메뉴 */}
+      {/* 모바일 메뉴 */}
       <div
         className={`md:hidden fixed top-20 left-0 w-full bg-white/95 backdrop-blur-md shadow-lg transform transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
           isMobileMenuOpen
@@ -170,7 +175,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
         </div>
       </div>
 
-      {/* ✅ PC 메가 메뉴 */}
+      {/* PC 메가 메뉴 */}
       <div
         className={`absolute top-full left-0 w-full bg-[#175689]/95 backdrop-blur-sm shadow-lg transition-all duration-500 ease-in-out transform ${
           isMenuVisible ? "max-h-96 opacity-100" : "max-h-0 opacity-0 invisible"
