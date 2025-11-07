@@ -1,6 +1,8 @@
 import type { Page, Product, ProductCategory, Solution } from "./types";
 
-// --- NAV_LINKS ---
+/* ============================
+   ✅ NAVIGATION LINKS
+============================ */
 export const NAV_LINKS: Page[] = [
   { name: "홈", path: "/", pageId: "home" },
 
@@ -9,10 +11,10 @@ export const NAV_LINKS: Page[] = [
     path: "/products",
     pageId: "products",
     children: [
-      { name: "청소로봇", path: "/products/cleaner", pageId: "products" },
-      { name: "물류로봇", path: "/products/logistics", pageId: "products" },
-      { name: "서빙로봇", path: "/products/delivery", pageId: "products" },
-      { name: "특수목적로봇", path: "/products/special", pageId: "products" },
+      { name: "청소로봇", path: "/products/cleaner", pageId: "products-cleaner" },
+      { name: "물류로봇", path: "/products/logistics", pageId: "products-logistics" },
+      { name: "서빙로봇", path: "/products/delivery", pageId: "products-delivery" },
+      { name: "특수목적로봇", path: "/products/special", pageId: "products-special" },
     ],
   },
 
@@ -20,21 +22,27 @@ export const NAV_LINKS: Page[] = [
     name: "체험신청",
     path: "/experience",
     pageId: "experience",
-    children: [{ name: "체험신청", path: "/experience", pageId: "experience" }],
+    children: [
+      { name: "체험신청", path: "/experience", pageId: "experience" }
+    ],
   },
 
   {
     name: "A/S신청",
     path: "/as",
     pageId: "as",
-    children: [{ name: "A/S신청", path: "/as", pageId: "as" }],
+    children: [
+      { name: "A/S신청", path: "/as", pageId: "as" }
+    ],
   },
 
   {
     name: "도입사례",
     path: "/cases",
     pageId: "cases",
-    children: [{ name: "도입사례", path: "/cases", pageId: "cases" }],
+    children: [
+      { name: "도입사례", path: "/cases", pageId: "cases" }
+    ],
   },
 
   {
@@ -42,14 +50,16 @@ export const NAV_LINKS: Page[] = [
     path: "/support",
     pageId: "support",
     children: [
-      { name: "자료실", path: "/support/resources", pageId: "support" },
-      { name: "자주 묻는 질문", path: "/support/faq", pageId: "support" },
-      { name: "문의하기", path: "/support/contact", pageId: "support" },
+      { name: "자료실", path: "/support/resources", pageId: "support-resources" },
+      { name: "자주 묻는 질문", path: "/support/faq", pageId: "support-faq" },
+      { name: "문의하기", path: "/support/contact", pageId: "support-contact" },
     ],
   },
 ];
 
-// --- PRODUCTS ---
+/* ============================
+   ✅ PRODUCTS DATA
+============================ */
 export const PRODUCTS: Product[] = [
   {
     id: "MT1",
@@ -85,7 +95,7 @@ export const PRODUCTS: Product[] = [
     isAvailable: true,
   },
 
-  // ✅ ✅ ✅ 새 제품 추가됨 (PHANTAS)
+  // ✅ 신규 등록 : PHANTAS
   {
     id: "PHANTAS",
     title: "LIBERTY PHANTAS",
@@ -113,6 +123,8 @@ export const PRODUCTS: Product[] = [
     path: "/product/T300",
     isAvailable: true,
   },
+
+  // 서빙로봇 → 준비 중
   {
     id: "DELIVERY",
     title: "비대면 배달 서비스 로봇",
@@ -124,6 +136,8 @@ export const PRODUCTS: Product[] = [
     path: "/products/delivery",
     isAvailable: false,
   },
+
+  // 특수목적로봇 → 준비 중
   {
     id: "SPECIAL",
     title: "맞춤형 특수 임무 로봇",
@@ -137,7 +151,9 @@ export const PRODUCTS: Product[] = [
   },
 ];
 
-// --- SOLUTIONS ---
+/* ============================
+   ✅ SOLUTION FIELDS (도입사례)
+============================ */
 export const SOLUTIONS: Solution[] = [
   {
     id: "sol-hotel",

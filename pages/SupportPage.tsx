@@ -1,19 +1,44 @@
 // pages/SupportPage.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InquiryForm from "../components/InquiryForm";
 import ResourcesList from "./ResourcesList";
 import ResourceDetail from "./ResourceDetail";
 
-const SupportPage: React.FC = () => {
-  // ✅ 탭 구성: A/S문의, 파트너십 제거 → 자료실 / FAQ / 문의하기
-  const tabs = ["자료실", "FAQ", "문의하기"];
-  const [activeTab, setActiveTab] = useState("문의하기");
-  const [selectedResourceId, setSelectedResourceId] = useState<number | null>(null);
+/* ✅ App.tsx에서 오는 영문 탭 타입 정의 */
+interface SupportPageProps {
+  activeTab?: "resources" | "faq" | "contact";
+}
+
+/* ✅ 내부에서 사용하는 탭 타입 (한글) */
+type LocalTab = "자료실" | "FAQ" | "문의하기";
+
+/* ✅ 영문 → 한글 변환 매핑 */
+const tabMap: Record<"resources" | "faq" | "contact", LocalTab> = {
+  resources: "자료실",
+  faq: "FAQ",
+  contact: "문의하기",
+};
+
+const SupportPage: React.FC<SupportPageProps> = ({ activeTab = "contact" }) => {
+  const tabs: LocalTab[] = ["자료실", "FAQ", "문의하기"];
+
+  /* ✅ 외부 activeTab(영문) → 내부 currentTab(한글) */
+  const [currentTab, setCurrentTab] = useState<LocalTab>(tabMap[activeTab]);
+
+  const [selectedResourceId, setSelectedResourceId] = useState<number | null>(
+    null
+  );
+
+  /* ✅ props(activeTab)가 바뀌면 자동 반영 */
+  useEffect(() => {
+    setCurrentTab(tabMap[activeTab]);
+    setSelectedResourceId(null);
+  }, [activeTab]);
 
   const handleBackToList = () => setSelectedResourceId(null);
 
   const renderContent = () => {
-    switch (activeTab) {
+    switch (currentTab) {
       case "자료실":
         return (
           <div className="py-10">
@@ -58,17 +83,17 @@ const SupportPage: React.FC = () => {
         <p className="text-gray-500 mt-2">고객지원</p>
       </div>
 
-      {/* 탭 버튼 */}
+      {/* ✅ 탭 버튼 */}
       <div className="flex justify-center gap-6 mt-8 mb-10 flex-wrap">
         {tabs.map((tab) => (
           <button
             key={tab}
             onClick={() => {
-              setActiveTab(tab);
-              setSelectedResourceId(null); // 자료실 상세 → 탭 이동 시 초기화
+              setCurrentTab(tab);
+              setSelectedResourceId(null);
             }}
             className={`px-6 py-2 rounded-full font-semibold transition ${
-              activeTab === tab
+              currentTab === tab
                 ? "bg-[#175689] text-white shadow-md hover:bg-[#144d74]"
                 : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-100"
             }`}
@@ -78,7 +103,7 @@ const SupportPage: React.FC = () => {
         ))}
       </div>
 
-      {/* 탭별 내용 */}
+      {/* ✅ 콘텐츠 영역 */}
       <div className="container mx-auto px-4 sm:px-8">{renderContent()}</div>
     </div>
   );
