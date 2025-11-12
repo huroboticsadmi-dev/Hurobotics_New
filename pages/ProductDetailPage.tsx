@@ -1,11 +1,11 @@
 // hurobotics-main/pages/ProductDetailPage.tsx
 import React from 'react';
-import type { Product } from '../types';
+import type { Product, PageId } from '../types';
 
 interface ProductDetailPageProps {
   product: Product;
   onBack: () => void;
-  onNavigate?: (pageId: string) => void;
+  onNavigate?: (pageId: PageId) => void;
 }
 
 const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
@@ -27,32 +27,14 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     );
   }
 
-  /* =========================================
-      ✅ 제품별 설명 문구
-  ========================================= */
   const textByProduct: Record<string, { desc: string }> = {
-    'LIBERTY MT1': {
-      desc: '대규모 공간을 빠르고 효율적으로 청소하는 스마트 청소 솔루션입니다.',
-    },
-    'LIBERTY CC1': {
-      desc: '건식, 습식, 진공청소를 한 번에 수행하는 상업용 올인원 청소 로봇입니다.',
-    },
-    'LIBERTY SH1': {
-      desc: '간편한 조작으로 효율적인 청소가 가능한 휴대형 바닥 세척 로봇입니다.',
-    },
-    'LIBERTY T300': {
-      desc: '최대 300kg 하중을 운반하는 자율주행형 물류 이송 솔루션입니다.',
-    },
-
-    // ✅ PHANTAS 설명 추가
-    'LIBERTY PHANTAS': {
-      desc: '스위핑·스크러빙·진공·모핑까지 수행하는 AI 기반 프리미엄 청소 로봇입니다.',
-    },
+    'LIBERTY MT1': { desc: '대규모 공간을 빠르고 효율적으로 청소하는 스마트 청소 솔루션입니다.' },
+    'LIBERTY CC1': { desc: '건식, 습식, 진공청소를 한 번에 수행하는 상업용 올인원 청소 로봇입니다.' },
+    'LIBERTY SH1': { desc: '간편한 조작으로 효율적인 청소가 가능한 휴대형 바닥 세척 로봇입니다.' },
+    'LIBERTY T300': { desc: '최대 300kg 하중을 운반하는 자율주행형 물류 이송 솔루션입니다.' },
+    'LIBERTY PHANTAS': { desc: '스위핑·스크러빙·진공·모핑까지 수행하는 AI 기반 프리미엄 청소 로봇입니다.' },
   };
 
-  /* =========================================
-      ✅ 제품별 스펙 (PHANTAS는 "요약 버전")
-  ========================================= */
   const specsByProduct: Record<string, Record<string, string>> = {
     'LIBERTY MT1': {
       크기: '840mm × 600mm × 490mm',
@@ -67,7 +49,6 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       '이동 최소 폭': '75 cm',
       '청소 폭': '70 cm',
     },
-
     'LIBERTY CC1': {
       청소능력: '700~1,000㎡/h',
       배터리: '25.6V / 50Ah',
@@ -83,7 +64,6 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       크기: '552 × 625 × 690mm',
       무게: '75kg',
     },
-
     'LIBERTY SH1': {
       크기: '490 × 530 × 1200mm',
       무게: '27kg',
@@ -97,7 +77,6 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       지속시간: '70~100분',
       소음: '71~76dB',
     },
-
     'LIBERTY T300': {
       크기: '835 × 500 × 1350mm',
       무게: '65kg',
@@ -111,8 +90,6 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       지속시간: '6~12h',
       포지셔닝: 'VSLAM & LiDAR SLAM',
     },
-
-    // ✅ 새 제품 PHANTAS — "요약 스펙"
     'LIBERTY PHANTAS': {
       크기: '540 × 440 × 617 mm',
       무게: '48 kg',
@@ -137,7 +114,6 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     <div className="bg-white pt-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         
-        {/* ✅ 뒤로가기 */}
         <div className="mb-8">
           <button
             onClick={onBack}
@@ -147,10 +123,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           </button>
         </div>
 
-        {/* ✅ 상세 영역 */}
         <div className="grid md:grid-cols-2 gap-12 items-start">
-          
-          {/* 이미지 */}
           <div>
             <img
               src={product.imageUrl || 'https://placehold.co/600x400/e2e8f0/94a3b8?text=No+Image'}
@@ -159,7 +132,6 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
             />
           </div>
 
-          {/* 텍스트 */}
           <div>
             <p className="text-blue-700 font-semibold mb-2">{product.category}</p>
             <h1 className="text-4xl font-bold text-slate-900 mb-4">{product.title}</h1>
@@ -167,17 +139,12 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               {currentText.desc || '제품 설명이 준비 중입니다.'}
             </p>
 
-            {/* ✅ 제품 사양 */}
             <div className="bg-slate-50 p-6 rounded-lg">
               <h2 className="text-2xl font-semibold text-slate-800 mb-4">제품 사양</h2>
-
               {Object.keys(specs).length > 0 ? (
                 <ul className="space-y-3">
                   {Object.entries(specs).map(([key, value]) => (
-                    <li
-                      key={key}
-                      className="flex justify-between border-b border-slate-200 pb-2"
-                    >
+                    <li key={key} className="flex justify-between border-b border-slate-200 pb-2">
                       <span className="font-medium text-slate-700">{key}</span>
                       <span className="text-slate-900 whitespace-pre-line">{value}</span>
                     </li>
@@ -188,13 +155,13 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               )}
             </div>
 
-            {/* ✅ 견적 문의 버튼 */}
+            {/* ✅ 문의하기 버튼 수정 */}
             <div className="mt-8">
               <button
-                onClick={() => onNavigate && onNavigate('rental')}
+                onClick={() => onNavigate && onNavigate('support-contact' as PageId)}
                 className="w-full bg-blue-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-900 transition-colors duration-300 shadow-lg"
               >
-                견적 문의하기
+                문의하기
               </button>
             </div>
 

@@ -49,14 +49,12 @@ const App: React.FC = () => {
 
   // ✅ 페이지 이동 핸들러
   const handleNavigate = (page: PageId) => {
-    // ----- 제품소개 클릭 시 기본값을 청소로봇으로 설정 -----
     if (page === "products") {
       setProductCategory("청소로봇");
       setCurrentPage("products");
       return;
     }
 
-    // ----- 제품 카테고리 전용 라우팅 -----
     if (page === "products-cleaner") {
       setProductCategory("청소로봇");
       setCurrentPage("products");
@@ -78,7 +76,6 @@ const App: React.FC = () => {
       return;
     }
 
-    // ----- 고객지원 3개 탭 라우팅 -----
     if (page === "support-resources") {
       setSupportTab("resources");
       setCurrentPage("support");
@@ -95,10 +92,8 @@ const App: React.FC = () => {
       return;
     }
 
-    // ----- 일반 페이지 이동 -----
     setCurrentPage(page);
 
-    // 제품 상세 초기화
     if (page !== "product") {
       setSelectedProduct(null);
     }
@@ -126,6 +121,7 @@ const App: React.FC = () => {
           <ProductsPage
             onProductSelect={handleProductSelect}
             initialCategory={productCategory}
+            onNavigate={handleNavigate}
           />
         );
 
@@ -140,6 +136,7 @@ const App: React.FC = () => {
           <ProductsPage
             onProductSelect={handleProductSelect}
             initialCategory={productCategory}
+            onNavigate={handleNavigate}
           />
         );
 

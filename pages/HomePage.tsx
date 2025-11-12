@@ -11,17 +11,17 @@ const heroVideos = [
   {
     id: 1,
     title: "신속한 A/S는 물론 고객 만족을\n최고의 가치로 삼는 휴로보틱스!",
-    videoUrl: "./videos/LIBERTY_CC1.mp4",
+    videoUrl: "/videos/LIBERTY_CC1.mp4",
   },
   {
     id: 2,
     title: "인건비 절감, 기업 이윤의 시작\n생산성을 높이는 가장 확실한 투자!",
-    videoUrl: "./videos/LIBERTY_MT1.mp4",
+    videoUrl: "/videos/LIBERTY_MT1.mp4",
   },
   {
     id: 3,
     title: "성공적인 스마트 팩토리\n자동화를 위한 최고의 파트너!",
-    videoUrl: "./videos/LIBERTY_T300.mp4",
+    videoUrl: "/videos/LIBERTY_T300.mp4",
   },
 ];
 

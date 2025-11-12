@@ -8,7 +8,8 @@ interface ProductsPageProps {
   initialCategory?: "청소로봇" | "물류로봇" | "서빙로봇" | "특수목적로봇";
   onCategoryChange?: (
     category: "청소로봇" | "물류로봇" | "서빙로봇" | "특수목적로봇"
-  ) => void; // ✅ 추가
+  ) => void;
+  onNavigate?: (pageId: string) => void;
 }
 
 const productCategories: Array<
@@ -19,24 +20,21 @@ const ProductsPage: React.FC<ProductsPageProps> = ({
   onProductSelect,
   initialCategory = "청소로봇",
   onCategoryChange,
+  onNavigate,
 }) => {
   const [activeCategory, setActiveCategory] = useState<
     "청소로봇" | "물류로봇" | "서빙로봇" | "특수목적로봇"
   >(initialCategory);
 
-  /* ✅ initialCategory 변경 시 반영 (App → ProductsPage) */
   useEffect(() => {
     setActiveCategory(initialCategory);
   }, [initialCategory]);
 
-  /* ✅ 버튼 클릭 시 내부 UI + App 동기화 */
   const handleCategoryClick = (
     category: "청소로봇" | "물류로봇" | "서빙로봇" | "특수목적로봇"
   ) => {
     setActiveCategory(category);
-    if (onCategoryChange) {
-      onCategoryChange(category); // ✅ App에게도 알려줌
-    }
+    if (onCategoryChange) onCategoryChange(category);
   };
 
   const filteredProducts = PRODUCTS.filter(
@@ -46,11 +44,16 @@ const ProductsPage: React.FC<ProductsPageProps> = ({
   const isClickable =
     activeCategory === "청소로봇" || activeCategory === "물류로봇";
 
+  // ✅ 문의하기 버튼 클릭 시 부모 클릭 이벤트 방지
+  const handleInquiryClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // ← 이 한 줄이 핵심
+    if (onNavigate) onNavigate("support-contact");
+    else window.location.href = "/support/contact#support";
+  };
+
   return (
     <div className="pt-24 bg-slate-50 min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-
-        {/* 상단 타이틀 */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold font-paperlogi text-slate-800">
             제품소개
@@ -60,7 +63,6 @@ const ProductsPage: React.FC<ProductsPageProps> = ({
           </p>
         </div>
 
-        {/* 카테고리 버튼 */}
         <div className="flex justify-center mb-12">
           <div className="flex flex-wrap gap-2 md:gap-4 p-2 bg-white rounded-full shadow-md">
             {productCategories.map((cat) => (
@@ -79,8 +81,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({
           </div>
         </div>
 
-        {/* 제품 목록 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {filteredProducts.map((product) => {
             const clickableProps = isClickable
               ? {
@@ -95,65 +96,69 @@ const ProductsPage: React.FC<ProductsPageProps> = ({
             return (
               <div
                 key={product.id}
-                className={`bg-white rounded-lg shadow-lg overflow-hidden group transform transition-transform duration-300 ${
-                  isClickable
-                    ? "cursor-pointer hover:-translate-y-2"
-                    : "cursor-default"
+                className={`flex flex-col bg-white rounded-2xl shadow-md overflow-visible group transition-transform duration-500 hover:shadow-2xl ${
+                  isClickable ? "cursor-pointer" : "cursor-default"
                 }`}
                 {...clickableProps}
               >
-                {/* 이미지 */}
-                <div className="relative h-64 bg-gray-50 flex items-center justify-center">
-                  {!product.isAvailable ? (
-                    <div className="flex flex-col items-center justify-center h-full">
-                      <span className="text-2xl font-semibold text-gray-400">
-                        🚧 준비 중입니다
-                      </span>
-                      <p className="text-gray-500 mt-2 text-sm">
-                        해당 제품은 곧 만나보실 수 있습니다.
-                      </p>
+                <div className="relative w-full bg-white flex items-center justify-center overflow-visible py-6">
+                  <img
+                    src={
+                      product.imageUrl.startsWith("./")
+                        ? product.imageUrl.replace("./", "/")
+                        : product.imageUrl
+                    }
+                    alt={product.title}
+                    className="max-h-64 w-auto object-contain transition-transform duration-700 scale-90 group-hover:scale-100"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src =
+                        "https://placehold.co/400x300/e2e8f0/94a3b8?text=No+Image";
+                    }}
+                  />
+                  {!product.isAvailable && (
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-lg font-semibold">
+                      🚧 준비 중입니다
                     </div>
-                  ) : (
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="w-full h-full object-contain p-4"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          "https://placehold.co/400x300/e2e8f0/94a3b8?text=No+Image";
-                      }}
-                    />
                   )}
                 </div>
 
-                {/* 텍스트 */}
-                <div className="p-6 text-center">
-                  <h3 className="text-xl font-bold text-slate-800 truncate">
+                <div className="p-5 flex flex-col items-center text-center">
+                  <h3 className="text-xl font-bold text-slate-800 mb-1">
                     {product.title}
                   </h3>
-                  <p className="mt-2 text-slate-500 font-medium">
-                    {product.name}
-                  </p>
+                  <p className="text-slate-500 mb-4 text-sm">{product.name}</p>
 
                   {product.descriptionPoints && (
-                    <ul className="mt-4 space-y-1 text-slate-400 text-sm">
+                    <div className="flex flex-wrap justify-center gap-2 mb-5">
                       {product.descriptionPoints.map((point, idx) => (
-                        <li key={idx}>• {point}</li>
+                        <span
+                          key={idx}
+                          className="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs"
+                        >
+                          {point}
+                        </span>
                       ))}
-                    </ul>
+                    </div>
                   )}
 
-                  {product.isAvailable && isClickable && (
-                    <button className="mt-6 w-full bg-[#175689]/10 text-[#175689] font-semibold py-2 px-4 rounded-lg group-hover:bg-[#175689] group-hover:text-white transition-colors duration-300">
-                      자세히 보기
+                  <div className="flex gap-3">
+                    {product.isAvailable && isClickable && (
+                      <button className="bg-[#175689] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#134d7a] transition-colors duration-300 text-sm">
+                        더 알아보기
+                      </button>
+                    )}
+                    <button
+                      onClick={handleInquiryClick}
+                      className="text-slate-600 font-semibold flex items-center gap-1 hover:text-[#175689] transition-colors duration-300 text-sm"
+                    >
+                      문의하기 <span className="text-base">›</span>
                     </button>
-                  )}
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
-
       </div>
     </div>
   );

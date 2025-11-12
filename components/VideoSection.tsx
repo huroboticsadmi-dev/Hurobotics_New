@@ -1,16 +1,16 @@
-// components/VideoSection.tsx
 import React from "react";
 import { FaYoutube } from "react-icons/fa";
 
 const VideoSection: React.FC = () => {
   const youtubeChannel = "https://www.youtube.com/@Hurobotics";
 
-  // ✅ 롱폼 영상 (지금은 1개만 표시)
+  // ✅ 롱폼 영상 (2개로 확장)
   const longformVideos = [
     "https://www.youtube.com/embed/DnOnyuQRQcw",
+    "https://www.youtube.com/embed/y8XwaZ1INr8", // 🔸 두 번째 롱폼 (원하면 다른 링크로 교체 가능)
   ];
 
-  // ✅ 숏폼 영상 (여러 개 유지)
+  // ✅ 숏폼 영상 (기존 유지)
   const shortsVideos = [
     "https://www.youtube.com/embed/xmTUQOh9ZgI",
     "https://www.youtube.com/embed/1E2_yozoLGI",
@@ -62,7 +62,7 @@ const VideoSection: React.FC = () => {
         </div>
       </div>
 
-      {/* ✅ 롱폼 영상 섹션 (1개 → 중앙 정렬) */}
+      {/* ✅ 롱폼 영상 섹션 (2개 → 반응형 1~2열 배치) */}
       <div className="max-w-6xl mx-auto px-4">
         <h3 className="text-3xl font-bold text-[#175689] mb-8">
           롱폼 영상 (Long-form)
@@ -70,9 +70,9 @@ const VideoSection: React.FC = () => {
 
         <div
           className={`
-            grid gap-6 
-            ${longformVideos.length === 1 
-              ? "grid-cols-1 justify-items-center"   /* ✅ 중앙 정렬 */
+            grid gap-6
+            ${longformVideos.length === 1
+              ? "grid-cols-1 justify-items-center"
               : "grid-cols-1 sm:grid-cols-2"
             }
           `}
@@ -80,7 +80,7 @@ const VideoSection: React.FC = () => {
           {longformVideos.map((url, index) => (
             <div
               key={index}
-              className="aspect-video bg-black rounded-2xl overflow-hidden shadow-lg border border-slate-200 w-full max-w-3xl"
+              className="aspect-video bg-black rounded-2xl overflow-hidden shadow-lg border border-slate-200 w-full"
             >
               <iframe
                 className="w-full h-full"
