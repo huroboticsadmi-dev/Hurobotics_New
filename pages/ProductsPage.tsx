@@ -44,9 +44,8 @@ const ProductsPage: React.FC<ProductsPageProps> = ({
   const isClickable =
     activeCategory === "청소로봇" || activeCategory === "물류로봇";
 
-  // ✅ 문의하기 버튼 클릭 시 부모 클릭 이벤트 방지
   const handleInquiryClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // ← 이 한 줄이 핵심
+    e.stopPropagation();
     if (onNavigate) onNavigate("support-contact");
     else window.location.href = "/support/contact#support";
   };
@@ -54,6 +53,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({
   return (
     <div className="pt-24 bg-slate-50 min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* 상단 타이틀 */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold font-paperlogi text-slate-800">
             제품소개
@@ -63,6 +63,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({
           </p>
         </div>
 
+        {/* 카테고리 버튼 */}
         <div className="flex justify-center mb-12">
           <div className="flex flex-wrap gap-2 md:gap-4 p-2 bg-white rounded-full shadow-md">
             {productCategories.map((cat) => (
@@ -81,6 +82,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({
           </div>
         </div>
 
+        {/* 제품 카드 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {filteredProducts.map((product) => {
             const clickableProps = isClickable
@@ -93,6 +95,8 @@ const ProductsPage: React.FC<ProductsPageProps> = ({
                 }
               : {};
 
+            const hasImage = !!product.imageUrl?.trim();
+
             return (
               <div
                 key={product.id}
@@ -101,27 +105,39 @@ const ProductsPage: React.FC<ProductsPageProps> = ({
                 }`}
                 {...clickableProps}
               >
-                <div className="relative w-full bg-white flex items-center justify-center overflow-visible py-6">
-                  <img
-                    src={
-                      product.imageUrl.startsWith("./")
-                        ? product.imageUrl.replace("./", "/")
-                        : product.imageUrl
-                    }
-                    alt={product.title}
-                    className="max-h-64 w-auto object-contain transition-transform duration-700 scale-90 group-hover:scale-100"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src =
-                        "https://placehold.co/400x300/e2e8f0/94a3b8?text=No+Image";
-                    }}
-                  />
-                  {!product.isAvailable && (
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-lg font-semibold">
+                {/* 이미지 (비어 있으면 완전 생략) */}
+                {hasImage && (
+                  <div className="relative w-full bg-white flex items-center justify-center overflow-visible py-6">
+                    <img
+                      src={
+                        product.imageUrl.startsWith("./")
+                          ? product.imageUrl.replace("./", "/")
+                          : product.imageUrl
+                      }
+                      alt={product.title}
+                      className="max-h-64 w-auto object-contain transition-transform duration-700 scale-90 group-hover:scale-100"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = "none";
+                      }}
+                    />
+                    {!product.isAvailable && (
+                      <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-lg font-semibold">
+                        🚧 준비 중입니다
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* 이미지가 아예 없을 때도 준비중 표시 */}
+                {!hasImage && (
+                  <div className="relative w-full bg-gray-200 flex items-center justify-center py-16 rounded-t-2xl">
+                    <div className="text-slate-800 text-lg font-semibold flex items-center gap-2">
                       🚧 준비 중입니다
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
 
+                {/* 텍스트 */}
                 <div className="p-5 flex flex-col items-center text-center">
                   <h3 className="text-xl font-bold text-slate-800 mb-1">
                     {product.title}
