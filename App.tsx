@@ -31,8 +31,31 @@ const App: React.FC = () => {
     window.scrollTo(0, 0);
   }, [currentPage]);
 
+  // ✅ 브라우저 뒤로가기/앞으로가기 흉내내기
+  useEffect(() => {
+    window.history.pushState({ page: currentPage }, "", `#${currentPage}`);
+
+    const handlePopState = (event: PopStateEvent) => {
+      if (event.state?.page) {
+        setCurrentPage(event.state.page);
+      } else {
+        setCurrentPage("home");
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [currentPage]);
+
   // ✅ 페이지 이동 핸들러
   const handleNavigate = (page: PageId) => {
+    // ----- 제품소개 클릭 시 기본값을 청소로봇으로 설정 -----
+    if (page === "products") {
+      setProductCategory("청소로봇");
+      setCurrentPage("products");
+      return;
+    }
+
     // ----- 제품 카테고리 전용 라우팅 -----
     if (page === "products-cleaner") {
       setProductCategory("청소로봇");
@@ -55,7 +78,7 @@ const App: React.FC = () => {
       return;
     }
 
-    // ----- 고객지원 3개 탭 라우팅(영문 탭 세팅 후 support로 이동) -----
+    // ----- 고객지원 3개 탭 라우팅 -----
     if (page === "support-resources") {
       setSupportTab("resources");
       setCurrentPage("support");
@@ -130,7 +153,6 @@ const App: React.FC = () => {
         return <CasesPage />;
 
       case "support":
-        // ✅ SupportPage는 영문 탭을 prop으로 받음
         return <SupportPage activeTab={supportTab} />;
 
       default:
