@@ -139,7 +139,6 @@ const ShowcaseProductsSection: React.FC<{
     useState<(typeof categories)[number]>("청소로봇");
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // ✅ 여기 PHANTAS 추가됨
   const AVAILABLE_PRODUCT_IDS = useMemo(
     () => new Set(["MT1", "CC1", "SH1", "PHANTAS", "T300"]),
     []
@@ -360,11 +359,13 @@ const SolutionSection: React.FC = () => {
                   className="w-full h-full object-cover rounded-full"
                 />
               </div>
+
+              {/* ✅ 여기 — 그림자 기본 있음 / hover면 제거 / selected면 제거 */}
               <span
-                className={`mt-2 text-sm font-semibold transition-colors duration-300 ${
+                className={`mt-2 text-sm font-semibold transition-all duration-300 ${
                   selected === i
-                    ? "text-[#175689]"
-                    : "text-white hover:text-white/90"
+                    ? "text-[#175689] drop-shadow-none"
+                    : "text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] hover:drop-shadow-none"
                 }`}
               >
                 {sol.name}
