@@ -28,7 +28,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   }
 
   const textByProduct: Record<string, { desc: string }> = {
-    'LIBERTY MT1': { desc: '대규모 공간을 빠르고 효율적으로 청소하는 스마트 청소 솔루션입니다.' },
+    'LIBERTTY MT1': { desc: '대규모 공간을 빠르고 효율적으로 청소하는 스마트 청소 솔루션입니다.' },
     'LIBERTY CC1': { desc: '건식, 습식, 진공청소를 한 번에 수행하는 상업용 올인원 청소 로봇입니다.' },
     'LIBERTY SH1': { desc: '간편한 조작으로 효율적인 청소가 가능한 휴대형 바닥 세척 로봇입니다.' },
     'LIBERTY T300': { desc: '최대 300kg 하중을 운반하는 자율주행형 물류 이송 솔루션입니다.' },
@@ -113,7 +113,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   return (
     <div className="bg-white pt-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        
+
         <div className="mb-8">
           <button
             onClick={onBack}
@@ -155,7 +155,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               )}
             </div>
 
-            {/* ✅ 문의하기 버튼 수정 */}
+            {/* 문의하기 버튼 */}
             <div className="mt-8">
               <button
                 onClick={() => onNavigate && onNavigate('support-contact' as PageId)}
@@ -164,9 +164,50 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                 문의하기
               </button>
             </div>
-
           </div>
         </div>
+
+        {/* ------------------------------------------------ */}
+        {/* 🔥 CC1 전용 GIF + 설명 텍스트 추가 섹션 */}
+        {/* ------------------------------------------------ */}
+        {product.title === 'LIBERTY CC1' && (
+          <section className="w-full bg-black text-white mt-20 py-16 rounded-lg">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-extrabold mb-6">
+                4 - IN - 1 무인 청소의 완성
+              </h2>
+              <p className="text-xl leading-relaxed">
+                건식청소, 습식청소, 진공청소, 걸레질 4가지 청소가 모두 가능합니다.
+                <br />
+                딱딱한 대리석, 우드, 타일, 카펫 등 다양한 바닥 유형에서도 청소가 가능합니다.
+              </p>
+            </div>
+
+            {/* GIF + 텍스트 4개 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 text-center">
+              <div>
+                <img src="/images/CC1_dust mopping.gif" className="w-full h-auto rounded-lg" />
+                <p className="mt-3 text-lg font-semibold">걸레질</p>
+              </div>
+
+              <div>
+                <img src="/images/CC1_scrubbing.gif" className="w-full h-auto rounded-lg" />
+                <p className="mt-3 text-lg font-semibold">물청소</p>
+              </div>
+
+              <div>
+                <img src="/images/CC1_sweeping.gif" className="w-full h-auto rounded-lg" />
+                <p className="mt-3 text-lg font-semibold">쓸기</p>
+              </div>
+
+              <div>
+                <img src="/images/CC1_vaccuming.gif" className="w-full h-auto rounded-lg" />
+                <p className="mt-3 text-lg font-semibold">흡입</p>
+              </div>
+            </div>
+          </section>
+        )}
+
       </div>
     </div>
   );
