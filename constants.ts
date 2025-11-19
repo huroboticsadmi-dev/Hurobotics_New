@@ -17,10 +17,10 @@ export const NAV_LINKS: Page[] = [
     ],
   },
   {
-    name: "체험신청",
+    name: "시연신청",
     path: "/experience",
     pageId: "experience",
-    children: [{ name: "체험신청", path: "/experience", pageId: "experience" }],
+    children: [{ name: "시연신청", path: "/experience", pageId: "experience" }],
   },
   {
     name: "A/S신청",
@@ -113,7 +113,7 @@ export const PRODUCTS: Product[] = [
     id: "DELIVERY",
     title: "비대면 배달 서비스 로봇",
     name: "서빙 및 배송 자동화",
-    imageUrl: "", // ✅ 이미지 표시 안 함
+    imageUrl: "",
     category: "서빙로봇" as ProductCategory,
     descriptionPoints: ["빠르고 안전한 배송", "엘리베이터 연동 가능", "비접촉 서비스 제공"],
     type: "Delivery",
@@ -124,7 +124,7 @@ export const PRODUCTS: Product[] = [
     id: "SPECIAL",
     title: "맞춤형 특수 임무 로봇",
     name: "현장 맞춤 기능 설계",
-    imageUrl: "", // ✅ 이미지 표시 안 함
+    imageUrl: "",
     category: "특수목적로봇" as ProductCategory,
     descriptionPoints: ["맞춤형 기능 설계", "위험 구역 투입 가능", "고강도 내구성 확보"],
     type: "Special",

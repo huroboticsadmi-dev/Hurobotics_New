@@ -1,168 +1,83 @@
-// hurobotics-main/pages/ProductsPage.tsx
-import React, { useState, useEffect } from "react";
-import { PRODUCTS } from "../constants";
-import type { Product } from "../types";
+// hurobotics-main/types.ts
 
-interface ProductsPageProps {
-  onProductSelect: (product: Product) => void;
-  initialCategory?: "청소로봇" | "물류로봇" | "서빙로봇" | "특수목적로봇";
-  onCategoryChange?: (
-    category: "청소로봇" | "물류로봇" | "서빙로봇" | "특수목적로봇"
-  ) => void;
-  onNavigate?: (pageId: string) => void;
+/* ============================
+   ✅ PageId 타입 정의
+   App.tsx / Header / constants.ts 에서 사용하는 모든 PageId 포함
+============================ */
+export type PageId =
+  | "home"
+  | "products"
+  | "product"
+  | "products-cleaner"
+  | "products-logistics"
+  | "products-delivery"
+  | "products-special"
+  | "experience"   // 체험신청
+  | "as"           // A/S신청
+  | "cases"        // 도입사례
+  | "support"      // 고객지원 메인
+  | "support-resources" // ✅ 자료실
+  | "support-faq"       // ✅ FAQ
+  | "support-contact";  // ✅ 문의하기
+
+/* ============================
+   ✅ Page 정보 타입
+============================ */
+export interface Page {
+  name: string;
+  path: string;
+  pageId: PageId;
+  children?: Page[];
 }
 
-const productCategories: Array<
-  "청소로봇" | "물류로봇" | "서빙로봇" | "특수목적로봇"
-> = ["청소로봇", "물류로봇", "서빙로봇", "특수목적로봇"];
+/* ============================
+   ✅ 제품 카테고리 타입
+============================ */
+export type ProductCategory =
+  | "청소로봇"
+  | "물류로봇"
+  | "서빙로봇"
+  | "특수목적로봇";
 
-const ProductsPage: React.FC<ProductsPageProps> = ({
-  onProductSelect,
-  initialCategory = "청소로봇",
-  onCategoryChange,
-  onNavigate,
-}) => {
-  const [activeCategory, setActiveCategory] = useState<
-    "청소로봇" | "물류로봇" | "서빙로봇" | "특수목적로봇"
-  >(initialCategory);
+/* ============================
+   ✅ 솔루션 분야 타입
+============================ */
+export type SolutionField =
+  | "호텔"
+  | "음식업"
+  | "마트"
+  | "제조물류"
+  | "건강의료"
+  | "주택빌딩"
+  | "교육"
+  | "엔터테인먼트"
+  | "교통서비스"
+  | "공공서비스";
 
-  useEffect(() => {
-    setActiveCategory(initialCategory);
-  }, [initialCategory]);
+/* ============================
+   ✅ Product 타입
+============================ */
+export interface Product {
+  id: string;
+  title: string;
+  name: string;
+  imageUrl: string;
+  category: ProductCategory;
+  descriptionPoints: string[];
+  type: string;
+  path: string;
+  isAvailable?: boolean;          // 제품 준비 상태
+  longDescription?: string;       // 상세 내용
+  specs?: Record<string, string>; // 스펙 정보
+}
 
-  const handleCategoryClick = (
-    category: "청소로봇" | "물류로봇" | "서빙로봇" | "특수목적로봇"
-  ) => {
-    setActiveCategory(category);
-    if (onCategoryChange) onCategoryChange(category);
-  };
-
-  const filteredProducts = PRODUCTS.filter(
-    (p) => p.category === activeCategory
-  );
-
-  const isClickable =
-    activeCategory === "청소로봇" || activeCategory === "물류로봇";
-
-  const handleInquiryClick = () => {
-    if (onNavigate) onNavigate("support-contact");
-    else history.pushState(null, "", "/support/contact");
-  };
-
-  return (
-    <div className="pt-24 bg-slate-50 min-h-screen">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* 상단 타이틀 */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold font-paperlogi text-slate-800">
-            제품소개
-          </h1>
-          <p className="mt-4 text-xl text-slate-600">
-            휴로보틱스의 혁신적인 로봇 제품군을 만나보세요.
-          </p>
-        </div>
-
-        {/* 카테고리 버튼 */}
-        <div className="flex justify-center mb-12">
-          <div className="flex flex-wrap gap-2 md:gap-4 p-2 bg-white rounded-full shadow-md">
-            {productCategories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => handleCategoryClick(cat)}
-                className={`px-4 py-2 md:px-6 md:py-3 text-sm md:text-base font-semibold rounded-full transition-all duration-300 ${
-                  activeCategory === cat
-                    ? "bg-[#175689] text-white shadow-lg"
-                    : "text-slate-600 hover:bg-slate-100"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* 제품 카드 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {filteredProducts.map((product) => {
-            const clickableProps = isClickable
-              ? {
-                  onClick: () => onProductSelect(product),
-                  role: "button" as const,
-                  tabIndex: 0,
-                  onKeyPress: (e: React.KeyboardEvent) =>
-                    e.key === "Enter" && onProductSelect(product),
-                }
-              : {};
-
-            return (
-              <div
-                key={product.id}
-                className={`flex flex-col bg-white rounded-2xl shadow-md overflow-visible group transition-transform duration-500 hover:shadow-2xl ${
-                  isClickable ? "cursor-pointer" : "cursor-default"
-                }`}
-                {...clickableProps}
-              >
-                {/* 이미지 */}
-                <div className="relative w-full bg-gray-100 flex items-center justify-center overflow-visible py-6">
-                  <img
-                    src={product.imageUrl.startsWith("./") 
-                      ? product.imageUrl.replace("./", "/") 
-                      : product.imageUrl}
-                    alt={product.title}
-                    className="max-h-64 w-auto object-contain transition-transform duration-700 scale-90 group-hover:scale-100"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src =
-                        "https://placehold.co/400x300/e2e8f0/94a3b8?text=No+Image";
-                    }}
-                  />
-                  {!product.isAvailable && (
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-lg font-semibold">
-                      🚧 준비 중입니다
-                    </div>
-                  )}
-                </div>
-
-                {/* 텍스트 */}
-                <div className="p-5 flex flex-col items-center text-center">
-                  <h3 className="text-xl font-bold text-slate-800 mb-1">
-                    {product.title}
-                  </h3>
-                  <p className="text-slate-500 mb-4 text-sm">{product.name}</p>
-
-                  {product.descriptionPoints && (
-                    <div className="flex flex-wrap justify-center gap-2 mb-5">
-                      {product.descriptionPoints.map((point, idx) => (
-                        <span
-                          key={idx}
-                          className="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs"
-                        >
-                          {point}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="flex gap-3">
-                    {product.isAvailable && isClickable && (
-                      <button className="bg-[#175689] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#134d7a] transition-colors duration-300 text-sm">
-                        더 알아보기
-                      </button>
-                    )}
-                    <button
-                      onClick={handleInquiryClick}
-                      className="text-slate-600 font-semibold flex items-center gap-1 hover:text-[#175689] transition-colors duration-300 text-sm"
-                    >
-                      문의하기 <span className="text-base">›</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default ProductsPage;
+/* ============================
+   ✅ Solution 타입
+============================ */
+export interface Solution {
+  id: string;
+  name: string;
+  description: string[];
+  imageUrl: string;
+  path: string;
+}

@@ -6,16 +6,16 @@ const VideoSection: React.FC = () => {
 
   // ✅ 롱폼 영상 (2개로 확장)
   const longformVideos = [
-    "https://www.youtube.com/embed/DnOnyuQRQcw",
-    "https://www.youtube.com/embed/y8XwaZ1INr8", // 🔸 두 번째 롱폼 (원하면 다른 링크로 교체 가능)
+    "https://www.youtube.com/embed/cYUOHZAP370",
+    "https://www.youtube.com/embed/fn3yXFnCdzU", // 🔸 두 번째 롱폼 (원하면 다른 링크로 교체 가능)
   ];
 
   // ✅ 숏폼 영상 (기존 유지)
   const shortsVideos = [
-    "https://www.youtube.com/embed/xmTUQOh9ZgI",
-    "https://www.youtube.com/embed/1E2_yozoLGI",
     "https://www.youtube.com/embed/awZhLrbR0M0",
-    "https://www.youtube.com/embed/5NcvUFIn6J8",
+    "https://www.youtube.com/embed/SxtFfPn5ibY",
+    "https://www.youtube.com/embed/p2SOTvQQtTw",
+    "https://www.youtube.com/embed/tKrgvWvowxs",
   ];
 
   return (
