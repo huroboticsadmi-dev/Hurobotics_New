@@ -1,6 +1,6 @@
 // hurobotics-main/pages/ProductDetailPage.tsx
-import React from 'react';
-import type { Product, PageId } from '../types';
+import React from "react";
+import type { Product, PageId } from "../types";
 
 interface ProductDetailPageProps {
   product: Product;
@@ -27,94 +27,23 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     );
   }
 
-  const textByProduct: Record<string, { desc: string }> = {
-    'LIBERTTY MT1': { desc: '대규모 공간을 빠르고 효율적으로 청소하는 스마트 청소 솔루션입니다.' },
-    'LIBERTY CC1': { desc: '건식, 습식, 진공청소를 한 번에 수행하는 상업용 올인원 청소 로봇입니다.' },
-    'LIBERTY SH1': { desc: '간편한 조작으로 효율적인 청소가 가능한 휴대형 바닥 세척 로봇입니다.' },
-    'LIBERTY T300': { desc: '최대 300kg 하중을 운반하는 자율주행형 물류 이송 솔루션입니다.' },
-    'LIBERTY PHANTAS': { desc: '스위핑·스크러빙·진공·모핑까지 수행하는 AI 기반 프리미엄 청소 로봇입니다.' },
-  };
-
-  const specsByProduct: Record<string, Record<string, string>> = {
-    'LIBERTY MT1': {
-      크기: '840mm × 600mm × 490mm',
-      무게: '65 kg',
-      청소능력: 'Max.1800㎡/h / Max.6000㎡/h(Spot)',
-      '쓰레기통 용량': '35 L',
-      '배터리 용량': '45 Ah',
-      '사용 가능 시간': '4~8h',
-      '이동 속도': '0.2~1.2 m/s',
-      '충전 시간': '< 3h',
-      '위치 추적': 'VSLAM + Marker + LiDAR SLAM',
-      '이동 최소 폭': '75 cm',
-      '청소 폭': '70 cm',
-    },
-    'LIBERTY CC1': {
-      청소능력: '700~1,000㎡/h',
-      배터리: '25.6V / 50Ah',
-      물탱크: '15L / 15L',
-      쓰레기통: '0.5L',
-      거름망: '2.5L',
-      청소폭: '500mm',
-      속도: '0.8m/s',
-      압력: '15kg',
-      소음: '<70dB',
-      사용시간: '습식 3~4h / 건식 8h',
-      충전: '<3h',
-      크기: '552 × 625 × 690mm',
-      무게: '75kg',
-    },
-    'LIBERTY SH1': {
-      크기: '490 × 530 × 1200mm',
-      무게: '27kg',
-      효율: '1100~1600㎡/h',
-      청수: '4L',
-      오수: '4L',
-      배터리: '18Ah',
-      청소폭: '44cm',
-      스퀴지폭: '49cm',
-      충전: '2.5h',
-      지속시간: '70~100분',
-      소음: '71~76dB',
-    },
-    'LIBERTY T300': {
-      크기: '835 × 500 × 1350mm',
-      무게: '65kg',
-      하중: '최대 300kg',
-      속도: '1.2m/s',
-      배터리: '30Ah',
-      충전: '2h (0~90%)',
-      장애물: '20mm',
-      홈폭: '35mm',
-      통과성: '≥60cm',
-      지속시간: '6~12h',
-      포지셔닝: 'VSLAM & LiDAR SLAM',
-    },
-    'LIBERTY PHANTAS': {
-      크기: '540 × 440 × 617 mm',
-      무게: '48 kg',
-      청소폭: '330–410 mm',
-      청소효율: '400–700㎡/h',
-      커버리지: '1500㎡ 이상',
-      먼지보관: '3–7일',
-      쓰레기통: '0.7 L',
-      등판능력: '8°',
-      속도: '0.8 m/s',
-      최소통과폭: '600 mm',
-      회전반경: '700 mm',
-      소음: '< 65 dB',
-      센서: 'LiDAR · 3D Depth · RGB · Anti-drop · Anti-collision',
-    },
-  };
-
-  const currentText = textByProduct[product.title] ?? { desc: '' };
-  const specs = specsByProduct[product.title] ?? {};
+  const detailImages = [
+    "/images/LIBERTYCC1_Detail_01.png",
+    "/images/LIBERTYCC1_Detail_02.png",
+    "/images/LIBERTYCC1_Detail_03.png",
+    "/images/LIBERTYCC1_Detail_04.png",
+    "/images/LIBERTYCC1_Detail_05.png",
+    "/images/LIBERTYCC1_Detail_06.png",
+    "/images/LIBERTYCC1_Detail_07.png",
+    "/images/LIBERTYCC1_Detail_08.png",
+  ];
 
   return (
     <div className="bg-white pt-24">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-        <div className="mb-8">
+        {/* 뒤로가기 */}
+        <div className="mb-6">
           <button
             onClick={onBack}
             className="text-blue-800 hover:text-blue-600 transition-colors duration-300 font-semibold"
@@ -123,90 +52,129 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           </button>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-start">
-          <div>
+        {/* 기본 정보 */}
+        <div className="grid md:grid-cols-2 gap-8 items-start">
+          <div className="flex justify-center">
             <img
-              src={product.imageUrl || 'https://placehold.co/600x400/e2e8f0/94a3b8?text=No+Image'}
+              src={
+                product.imageUrl ||
+                "https://placehold.co/600x400/e2e8f0/94a3b8?text=No+Image"
+              }
               alt={product.name}
-              className="w-full h-auto object-cover rounded-lg shadow-2xl"
+              className="w-2/5 object-contain mx-auto"
             />
           </div>
 
           <div>
-            <p className="text-blue-700 font-semibold mb-2">{product.category}</p>
-            <h1 className="text-4xl font-bold text-slate-900 mb-4">{product.title}</h1>
-            <p className="text-lg text-slate-600 mb-8">
-              {currentText.desc || '제품 설명이 준비 중입니다.'}
+            <p className="text-blue-700 font-semibold mb-1">{product.category}</p>
+            <h1 className="text-4xl font-bold text-slate-900 mb-3">
+              {product.title}
+            </h1>
+            <p className="text-lg text-slate-600 mb-6">
+              {product.title === "LIBERTY CC1"
+                ? "건식, 습식, 진공청소를 한 번에 수행하는 상업용 올인원 청소 로봇입니다."
+                : ""}
             </p>
-
-            <div className="bg-slate-50 p-6 rounded-lg">
-              <h2 className="text-2xl font-semibold text-slate-800 mb-4">제품 사양</h2>
-              {Object.keys(specs).length > 0 ? (
-                <ul className="space-y-3">
-                  {Object.entries(specs).map(([key, value]) => (
-                    <li key={key} className="flex justify-between border-b border-slate-200 pb-2">
-                      <span className="font-medium text-slate-700">{key}</span>
-                      <span className="text-slate-900 whitespace-pre-line">{value}</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-slate-500">제품 사양 정보가 없습니다.</p>
-              )}
-            </div>
-
-            {/* 문의하기 버튼 */}
-            <div className="mt-8">
-              <button
-                onClick={() => onNavigate && onNavigate('support-contact' as PageId)}
-                className="w-full bg-blue-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-900 transition-colors duration-300 shadow-lg"
-              >
-                문의하기
-              </button>
-            </div>
           </div>
         </div>
 
-        {/* ------------------------------------------------ */}
-        {/* 🔥 CC1 전용 GIF + 설명 텍스트 추가 섹션 */}
-        {/* ------------------------------------------------ */}
-        {product.title === 'LIBERTY CC1' && (
-          <section className="w-full bg-black text-white mt-20 py-16 rounded-lg">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-extrabold mb-6">
-                4 - IN - 1 무인 청소의 완성
-              </h2>
-              <p className="text-xl leading-relaxed">
-                건식청소, 습식청소, 진공청소, 걸레질 4가지 청소가 모두 가능합니다.
-                <br />
-                딱딱한 대리석, 우드, 타일, 카펫 등 다양한 바닥 유형에서도 청소가 가능합니다.
-              </p>
-            </div>
+        {/* CC1 상세 이미지 */}
+        {product.title === "LIBERTY CC1" && (
+          <div className="mt-12 space-y-0">
 
-            {/* GIF + 텍스트 4개 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 text-center">
-              <div>
-                <img src="/images/CC1_dust mopping.gif" className="w-full h-auto rounded-lg" />
-                <p className="mt-3 text-lg font-semibold">걸레질</p>
+            {/* Detail 01 */}
+            <img
+              src={detailImages[0]}
+              className="w-3/5 mx-auto"
+              alt="Detail 01"
+            />
+
+            {/* Detail 02 */}
+            <img
+              src={detailImages[1]}
+              className="w-3/5 mx-auto"
+              alt="Detail 02"
+            />
+
+            {/* GIF 섹션 */}
+            <section className="w-3/5 mx-auto bg-black text-white py-3 mt-0 rounded-none">
+
+              <div className="text-center pb-4">
+                <h2 className="text-3xl font-extrabold mb-2">
+                  4 - IN - 1 무인 청소의 완성
+                </h2>
+                <p className="text-lg leading-relaxed">
+                  건식청소, 습식청소, 진공청소, 걸레질 4가지 청소가 모두 가능합니다.
+                  <br />
+                  다양한 바닥 유형에서도 청소가 가능합니다.
+                </p>
               </div>
 
-              <div>
-                <img src="/images/CC1_scrubbing.gif" className="w-full h-auto rounded-lg" />
-                <p className="mt-3 text-lg font-semibold">물청소</p>
-              </div>
+              {/* GIF 4개 → 2×2 */}
+              <div className="grid grid-cols-2 gap-0 text-center">
 
-              <div>
-                <img src="/images/CC1_sweeping.gif" className="w-full h-auto rounded-lg" />
-                <p className="mt-3 text-lg font-semibold">쓸기</p>
-              </div>
+                <div>
+                  <img
+                    src="/images/CC1_dust mopping.gif"
+                    className="w-full h-auto rounded-none"
+                    alt="걸레질"
+                  />
+                  <p className="py-2 text-base font-semibold">걸레질</p>
+                </div>
 
-              <div>
-                <img src="/images/CC1_vaccuming.gif" className="w-full h-auto rounded-lg" />
-                <p className="mt-3 text-lg font-semibold">흡입</p>
+                <div>
+                  <img
+                    src="/images/CC1_scrubbing.gif"
+                    className="w-full h-auto rounded-none"
+                    alt="물청소"
+                  />
+                  <p className="py-2 text-base font-semibold">물청소</p>
+                </div>
+
+                <div>
+                  <img
+                    src="/images/CC1_sweeping.gif"
+                    className="w-full h-auto rounded-none"
+                    alt="쓸기"
+                  />
+                  <p className="py-2 text-base font-semibold">쓸기</p>
+                </div>
+
+                <div>
+                  <img
+                    src="/images/CC1_vaccuming.gif"
+                    className="w-full h-auto rounded-none"
+                    alt="흡입"
+                  />
+                  <p className="py-2 text-base font-semibold">흡입</p>
+                </div>
+
               </div>
-            </div>
-          </section>
+            </section>
+
+            {/* Detail 03~08 */}
+            {detailImages.slice(2).map((src, i) => (
+              <img
+                key={i}
+                src={src}
+                className="w-3/5 mx-auto"
+                alt={`Detail ${i + 3}`}
+              />
+            ))}
+          </div>
         )}
+
+        {/* 문의하기 버튼 */}
+        <div className="mt-12">
+          <button
+            onClick={() =>
+              onNavigate && onNavigate("support-contact" as PageId)
+            }
+            className="w-full bg-black text-white font-bold py-4 rounded-lg hover:bg-slate-900 transition-colors duration-300 shadow-lg text-lg"
+          >
+            문의하기
+          </button>
+        </div>
 
       </div>
     </div>
