@@ -78,7 +78,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           </div>
         </div>
 
-        {/* CC1 상세 이미지 */}
+        {/* CC1 상세 */}
         {product.title === "LIBERTY CC1" && (
           <div className="mt-12 space-y-0">
 
@@ -96,21 +96,10 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               alt="Detail 02"
             />
 
-            {/* GIF 섹션 */}
-            <section className="w-3/5 mx-auto bg-black text-white py-3 mt-0 rounded-none">
+            {/* GIF 세션 (텍스트 제거 버전) */}
+            <section className="w-3/5 mx-auto bg-black text-white py-6 mt-0 rounded-none">
 
-              <div className="text-center pb-4">
-                <h2 className="text-3xl font-extrabold mb-2">
-                  4 - IN - 1 무인 청소의 완성
-                </h2>
-                <p className="text-lg leading-relaxed">
-                  건식청소, 습식청소, 진공청소, 걸레질 4가지 청소가 모두 가능합니다.
-                  <br />
-                  다양한 바닥 유형에서도 청소가 가능합니다.
-                </p>
-              </div>
-
-              {/* GIF 4개 → 2×2 */}
+              {/* GIF 2×2 */}
               <div className="grid grid-cols-2 gap-0 text-center">
 
                 <div>
@@ -119,7 +108,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                     className="w-full h-auto rounded-none"
                     alt="걸레질"
                   />
-                  <p className="py-2 text-base font-semibold">걸레질</p>
+                  <p className="py-3 text-lg font-semibold">걸레질</p>
                 </div>
 
                 <div>
@@ -128,7 +117,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                     className="w-full h-auto rounded-none"
                     alt="물청소"
                   />
-                  <p className="py-2 text-base font-semibold">물청소</p>
+                  <p className="py-3 text-lg font-semibold">물청소</p>
                 </div>
 
                 <div>
@@ -137,7 +126,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                     className="w-full h-auto rounded-none"
                     alt="쓸기"
                   />
-                  <p className="py-2 text-base font-semibold">쓸기</p>
+                  <p className="py-3 text-lg font-semibold">쓸기</p>
                 </div>
 
                 <div>
@@ -146,10 +135,17 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                     className="w-full h-auto rounded-none"
                     alt="흡입"
                   />
-                  <p className="py-2 text-base font-semibold">흡입</p>
+                  <p className="py-3 text-lg font-semibold">흡입</p>
                 </div>
-
               </div>
+
+              {/* 1일 최대 12,000㎡ 문구 (더 크고 여유 있게) */}
+              <div className="text-center mt-10 pb-2">
+                <p className="text-3xl font-extrabold tracking-tight">
+                  1일 최대 12,000㎡ (약 3,600평) 청소!
+                </p>
+              </div>
+
             </section>
 
             {/* Detail 03~08 */}
@@ -164,7 +160,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           </div>
         )}
 
-        {/* 문의하기 버튼 */}
+        {/* 문의하기 */}
         <div className="mt-12">
           <button
             onClick={() =>
