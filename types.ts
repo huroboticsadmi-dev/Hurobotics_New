@@ -12,13 +12,14 @@ export type PageId =
   | "products-logistics"
   | "products-delivery"
   | "products-special"
-  | "experience"   // 체험신청
-  | "as"           // A/S신청
-  | "cases"        // 도입사례
-  | "support"      // 고객지원 메인
-  | "support-resources" // ✅ 자료실
-  | "support-faq"       // ✅ FAQ
-  | "support-contact";  // ✅ 문의하기
+  | "experience"        // 체험신청
+  | "as"                // A/S신청
+  | "cases"             // 도입사례
+  | "event"             // ⭐ 신규 추가된 이벤트 페이지
+  | "support"           // 고객지원 메인
+  | "support-resources" // 자료실
+  | "support-faq"       // FAQ
+  | "support-contact";  // 문의하기
 
 /* ============================
    ✅ Page 정보 타입
@@ -66,9 +67,9 @@ export interface Product {
   descriptionPoints: string[];
   type: string;
   path: string;
-  isAvailable?: boolean;          // 제품 준비 상태
-  longDescription?: string;       // 상세 내용
-  specs?: Record<string, string>; // 스펙 정보
+  isAvailable?: boolean;
+  longDescription?: string;
+  specs?: Record<string, string>;
 }
 
 /* ============================

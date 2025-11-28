@@ -6,32 +6,33 @@ import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
-import RentalPage from "./pages/RentalPage";   // ✅ 체험신청
-import ASPage from "./pages/ASPage";           // ✅ A/S신청
-import CasesPage from "./pages/CasesPage";     // ✅ 도입사례
-import SupportPage from "./pages/SupportPage"; // ✅ 고객지원
+import RentalPage from "./pages/RentalPage";   // 시연신청
+import ASPage from "./pages/ASPage";           // A/S신청
+import CasesPage from "./pages/CasesPage";     // 도입사례
+import SupportPage from "./pages/SupportPage"; // 고객지원
+import EventPage from "./pages/EventPage";     // ⭐ 이벤트 페이지 추가
 import type { Product, PageId } from "./types";
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<PageId>("home");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  // ✅ 제품 카테고리 상태 (한글)
+  // 제품 카테고리 상태
   const [productCategory, setProductCategory] = useState<
     "청소로봇" | "물류로봇" | "서빙로봇" | "특수목적로봇"
   >("청소로봇");
 
-  // ✅ 고객지원 탭 상태 (영문으로 고정)
-  const [supportTab, setSupportTab] = useState<"resources" | "faq" | "contact">(
-    "resources"
-  );
+  // 고객지원 active 탭
+  const [supportTab, setSupportTab] = useState<
+    "resources" | "faq" | "contact"
+  >("resources");
 
-  // ✅ 페이지 변경 시 스크롤 맨 위로 이동
+  // 페이지 이동 시 스크롤 맨 위로 이동
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPage]);
 
-  // ✅ 브라우저 뒤로가기/앞으로가기 흉내내기
+  // 브라우저 뒤로가기 대응
   useEffect(() => {
     window.history.pushState({ page: currentPage }, "", `#${currentPage}`);
 
@@ -47,7 +48,7 @@ const App: React.FC = () => {
     return () => window.removeEventListener("popstate", handlePopState);
   }, [currentPage]);
 
-  // ✅ 페이지 이동 핸들러
+  // 페이지 이동
   const handleNavigate = (page: PageId) => {
     if (page === "products") {
       setProductCategory("청소로봇");
@@ -99,13 +100,13 @@ const App: React.FC = () => {
     }
   };
 
-  // ✅ 제품 클릭 → 상세 페이지로 이동
+  // 제품 상세 페이지 이동
   const handleProductSelect = (product: Product) => {
     setSelectedProduct(product);
     setCurrentPage("product");
   };
 
-  // ✅ 페이지 렌더링
+  // 페이지 렌더링
   const renderPage = () => {
     switch (currentPage) {
       case "home":
@@ -145,6 +146,10 @@ const App: React.FC = () => {
 
       case "as":
         return <ASPage />;
+
+      /* ⭐⭐⭐ 이벤트 라우팅 추가됨 ⭐⭐⭐ */
+      case "event":
+        return <EventPage />;
 
       case "cases":
         return <CasesPage />;

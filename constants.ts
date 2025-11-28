@@ -1,10 +1,11 @@
 import type { Page, Product, ProductCategory, Solution } from "./types";
 
 /* ============================
-   ✅ NAVIGATION LINKS
+   NAVIGATION LINKS
 ============================ */
 export const NAV_LINKS: Page[] = [
   { name: "홈", path: "/", pageId: "home" },
+
   {
     name: "제품소개",
     path: "/products",
@@ -16,24 +17,43 @@ export const NAV_LINKS: Page[] = [
       { name: "특수목적로봇", path: "/products/special", pageId: "products-special" },
     ],
   },
+
   {
     name: "시연신청",
     path: "/experience",
     pageId: "experience",
-    children: [{ name: "시연신청", path: "/experience", pageId: "experience" }],
+    children: [
+      { name: "시연신청", path: "/experience", pageId: "experience" }
+    ],
   },
+
   {
     name: "A/S신청",
     path: "/as",
     pageId: "as",
-    children: [{ name: "A/S신청", path: "/as", pageId: "as" }],
+    children: [
+      { name: "A/S신청", path: "/as", pageId: "as" }
+    ],
   },
+
+  {
+    name: "이벤트",
+    path: "/event",
+    pageId: "event",
+    children: [
+      { name: "이벤트", path: "/event", pageId: "event" }
+    ],
+  },
+
   {
     name: "도입사례",
     path: "/cases",
     pageId: "cases",
-    children: [{ name: "도입사례", path: "/cases", pageId: "cases" }],
+    children: [
+      { name: "도입사례", path: "/cases", pageId: "cases" }
+    ],
   },
+
   {
     name: "고객지원",
     path: "/support",
@@ -47,7 +67,7 @@ export const NAV_LINKS: Page[] = [
 ];
 
 /* ============================
-   ✅ PRODUCTS DATA
+   PRODUCTS
 ============================ */
 export const PRODUCTS: Product[] = [
   {
@@ -55,7 +75,7 @@ export const PRODUCTS: Product[] = [
     title: "LIBERTY MT1",
     name: "대규모 공간 청소가 가능한 건식청소로봇",
     imageUrl: "/images/LIBERTY_MT1.png",
-    category: "청소로봇" as ProductCategory,
+    category: "청소로봇",
     descriptionPoints: ["AI 기반 자율주행", "고효율 필터 시스템", "IoT 실시간 모니터링"],
     type: "Cleaner",
     path: "/product/MT1",
@@ -66,7 +86,7 @@ export const PRODUCTS: Product[] = [
     title: "LIBERTY CC1",
     name: "지능형 상업용 청소 로봇",
     imageUrl: "/images/LIBERTY_CC1.png",
-    category: "청소로봇" as ProductCategory,
+    category: "청소로봇",
     descriptionPoints: ["AI 기반 자율주행", "고효율 필터 시스템", "IoT 실시간 모니터링"],
     type: "Cleaner",
     path: "/product/CC1",
@@ -77,7 +97,7 @@ export const PRODUCTS: Product[] = [
     title: "LIBERTY SH1",
     name: "직립형 스마트 바닥 세척기",
     imageUrl: "/images/LIBERTY_SH1_BLACK.png",
-    category: "청소로봇" as ProductCategory,
+    category: "청소로봇",
     descriptionPoints: ["다차원 청소", "부품 자체 검사", "빠른 배터리 교체"],
     type: "Cleaner",
     path: "/product/SH1",
@@ -88,12 +108,8 @@ export const PRODUCTS: Product[] = [
     title: "LIBERTY PHANTAS",
     name: "AI 기반 올인원 스마트 청소 로봇",
     imageUrl: "/images/LIBERTY_Phantas.png",
-    category: "청소로봇" as ProductCategory,
-    descriptionPoints: [
-      "4-in-1 프리미엄 청소(스위핑·스크러빙·진공·모핑)",
-      "최신 AI 기반 자율주행",
-      "대형 시설 최적화 설계",
-    ],
+    category: "청소로봇",
+    descriptionPoints: ["4-in-1 프리미엄 청소", "최신 AI 기반 자율주행", "대형 시설 최적화 설계"],
     type: "Cleaner",
     path: "/product/PHANTAS",
     isAvailable: true,
@@ -103,7 +119,7 @@ export const PRODUCTS: Product[] = [
     title: "LIBERTY T300",
     name: "자율 물류 이동 솔루션",
     imageUrl: "/images/LIBERTY_T300_WHITE.png",
-    category: "물류로봇" as ProductCategory,
+    category: "물류로봇",
     descriptionPoints: ["자율 물류 이동", "경로 최적화 알고리즘", "다중 로봇 관리 시스템"],
     type: "Logistics",
     path: "/product/T300",
@@ -114,7 +130,7 @@ export const PRODUCTS: Product[] = [
     title: "비대면 배달 서비스 로봇",
     name: "서빙 및 배송 자동화",
     imageUrl: "",
-    category: "서빙로봇" as ProductCategory,
+    category: "서빙로봇",
     descriptionPoints: ["빠르고 안전한 배송", "엘리베이터 연동 가능", "비접촉 서비스 제공"],
     type: "Delivery",
     path: "/products/delivery",
@@ -125,7 +141,7 @@ export const PRODUCTS: Product[] = [
     title: "맞춤형 특수 임무 로봇",
     name: "현장 맞춤 기능 설계",
     imageUrl: "",
-    category: "특수목적로봇" as ProductCategory,
+    category: "특수목적로봇",
     descriptionPoints: ["맞춤형 기능 설계", "위험 구역 투입 가능", "고강도 내구성 확보"],
     type: "Special",
     path: "/products/special",
@@ -134,7 +150,7 @@ export const PRODUCTS: Product[] = [
 ];
 
 /* ============================
-   ✅ SOLUTION FIELDS (도입사례)
+   SOLUTIONS
 ============================ */
 export const SOLUTIONS: Solution[] = [
   {
