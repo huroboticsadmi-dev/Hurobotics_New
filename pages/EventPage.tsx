@@ -20,9 +20,9 @@ interface EventItem {
 const events: EventItem[] = [
   {
     id: "promo_202512",
-    title: "12월 특별프로모션",
-    desc: "12월 한정! 청소로봇 특별 프로모션을 확인하세요.",
-    image: "/images/promo_december.png", // 필요하면 파일명 바꿔줘!
+    title: "2025 크리스마스 기념 프로모션",
+    desc: "12월 한정! 리버티 판타스 특별 프로모션을 확인하세요.",
+    image: "/images/2025_December_Promotion.png", // 필요하면 파일명 바꿔줘!
     start: "2025-12-01",
     end: "2025-12-31",
     status: "ongoing",

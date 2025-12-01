@@ -1,5 +1,5 @@
 // components/Header.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NAV_LINKS } from "../constants";
 import type { PageId } from "../types";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
@@ -14,10 +14,22 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const isHome = currentPage === "home";
+  /* 🔥 홈 판정: URL이 정확히 "#home"일 때만 홈 */
+  const isHome = window.location.hash === "#home";
+
   const isTransparent =
     isHome && !scrolled && !isMenuVisible && !isMobileMenuOpen;
+
   const isSolid = !isTransparent;
+
+  /* 스크롤 이벤트 */
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const darkLogo =
     "https://i.postimg.cc/MpCPzjY4/hyuaenlobotigseu-kkamang-galo.png";
@@ -38,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
         }`}
       >
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center">
-
+          
           {/* LOGO */}
           <div className="absolute left-0">
             <button
@@ -60,7 +72,6 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
             className="hidden md:grid grid-cols-7 w-full gap-x-6 ml-[120px] h-12 items-center"
             onMouseEnter={() => setIsMenuVisible(true)}
           >
-            {/* 1열: 로고 아래 빈칸 — 복원됨 */}
             <div></div>
 
             {TOP_LINKS.map((link) => (

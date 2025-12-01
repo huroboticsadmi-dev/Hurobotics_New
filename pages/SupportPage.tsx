@@ -3,10 +3,12 @@ import React, { useState, useEffect } from "react";
 import InquiryForm from "../components/InquiryForm";
 import ResourcesList from "./ResourcesList";
 import ResourceDetail from "./ResourceDetail";
+import type { PageId } from "../types";
 
 /* ✅ App.tsx에서 오는 영문 탭 타입 정의 */
 interface SupportPageProps {
   activeTab?: "resources" | "faq" | "contact";
+  onNavigate?: (page: PageId) => void; // ⭐ 추가됨 (오류 해결)
 }
 
 /* ✅ 내부에서 사용하는 탭 타입 (한글) */
