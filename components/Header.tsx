@@ -14,15 +14,11 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  /* 🔥 홈 판정: URL이 정확히 "#home"일 때만 홈 */
   const isHome = window.location.hash === "#home";
-
   const isTransparent =
     isHome && !scrolled && !isMenuVisible && !isMobileMenuOpen;
-
   const isSolid = !isTransparent;
 
-  /* 스크롤 이벤트 */
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -38,12 +34,13 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
 
   const TOP_LINKS = NAV_LINKS.filter((l) => l.name !== "홈");
 
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
   return (
     <header
       className="fixed top-0 left-0 right-0 z-[9999]"
       onMouseLeave={() => setIsMenuVisible(false)}
     >
-      {/* TOP NAV BAR */}
       <div
         className={`transition-all duration-500 ${
           isSolid ? "bg-white/95 backdrop-blur-sm shadow-md" : "bg-transparent"
@@ -57,6 +54,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
               onClick={() => {
                 onNavigate("home");
                 setIsMobileMenuOpen(false);
+                setIsMenuVisible(false);
               }}
             >
               <img
@@ -67,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
             </button>
           </div>
 
-          {/* MENU GRID */}
+          {/* DESKTOP MENU */}
           <nav
             className="hidden md:grid grid-cols-7 w-full gap-x-6 ml-[120px] h-12 items-center"
             onMouseEnter={() => setIsMenuVisible(true)}
@@ -79,7 +77,6 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                 key={link.name}
                 onClick={() => {
                   onNavigate(link.pageId as PageId);
-                  setIsMobileMenuOpen(false);
                   setIsMenuVisible(false);
                 }}
                 className={`text-[19px] font-semibold text-center transition-colors duration-300 ${
@@ -96,7 +93,10 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
           {/* MOBILE MENU BUTTON */}
           <div className="absolute right-0 md:hidden flex items-center">
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={() => {
+                setIsMobileMenuOpen(!isMobileMenuOpen);
+                setIsMenuVisible(!isMenuVisible);
+              }}
               className="text-3xl"
             >
               {isMobileMenuOpen ? (
@@ -115,17 +115,24 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
       <div
         className={`absolute top-full left-0 w-full bg-[#175689]/95 backdrop-blur-sm shadow-lg 
           transition-all duration-500
-          ${isMenuVisible ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0 invisible"}
+          ${isMenuVisible ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0 invisible"}
         `}
       >
         <div className="container mx-auto px-10 py-8">
-          <div className="grid grid-cols-7 gap-x-6 ml-[120px]">
-
-            <div></div>
+          <div
+            className="
+              grid 
+              grid-cols-1 md:grid-cols-7 
+              gap-x-6 
+              ml-0 md:ml-[120px]
+              text-center md:text-left
+            "
+          >
+            <div className="hidden md:block"></div>
 
             {TOP_LINKS.map((link) => (
-              <div key={link.name} className="flex flex-col items-center">
-                <ul className="space-y-3 text-center w-full">
+              <div key={link.name} className="flex flex-col items-center md:items-start">
+                <ul className="space-y-3 text-center md:text-left w-full">
                   {(link.children ?? []).map((child) => (
                     <li key={child.pageId}>
                       <button
@@ -133,6 +140,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                         onClick={() => {
                           onNavigate(child.pageId as PageId);
                           setIsMenuVisible(false);
+                          setIsMobileMenuOpen(false);
                         }}
                       >
                         {child.name}

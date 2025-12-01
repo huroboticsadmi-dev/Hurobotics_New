@@ -22,7 +22,7 @@ const events: EventItem[] = [
     id: "promo_202512",
     title: "2025 크리스마스 기념 프로모션",
     desc: "12월 한정! 리버티 판타스 특별 프로모션을 확인하세요.",
-    image: "/images/2025_December_Promotion.png", // 필요하면 파일명 바꿔줘!
+    image: "/images/2025_December_Promotion.png",
     start: "2025-12-01",
     end: "2025-12-31",
     status: "ongoing",
@@ -45,10 +45,10 @@ const EventPage: React.FC<EventPageProps> = ({ onNavigate }) => {
         <div className="flex gap-4 mb-10">
           <button
             onClick={() => setTab("ongoing")}
-            className={`px-10 py-3 rounded-sm font-semibold border ${
+            className={`px-10 py-3 rounded-sm font-semibold border transition ${
               tab === "ongoing"
                 ? "bg-amber-600 text-white border-amber-600"
-                : "bg-white text-gray-600 border-gray-300"
+                : "bg-white text-gray-600 border-gray-300 hover:bg-[#175689] hover:text-white hover:border-[#175689]"
             }`}
           >
             진행중
@@ -56,10 +56,10 @@ const EventPage: React.FC<EventPageProps> = ({ onNavigate }) => {
 
           <button
             onClick={() => setTab("ended")}
-            className={`px-10 py-3 rounded-sm font-semibold border ${
+            className={`px-10 py-3 rounded-sm font-semibold border transition ${
               tab === "ended"
                 ? "bg-amber-600 text-white border-amber-600"
-                : "bg-white text-gray-600 border-gray-300"
+                : "bg-white text-gray-600 border-gray-300 hover:bg-[#175689] hover:text-white hover:border-[#175689]"
             }`}
           >
             종료
@@ -76,13 +76,17 @@ const EventPage: React.FC<EventPageProps> = ({ onNavigate }) => {
         {/* Event list */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {filteredEvents.map((event) => (
-            <div key={event.id} className="border rounded-lg shadow-sm overflow-hidden">
+            <div
+              key={event.id}
+              className="border rounded-lg shadow-sm overflow-hidden transition hover:shadow-md hover:border-[#175689]"
+            >
 
-              {/* Image */}
+              {/* Image (clickable) */}
               <img
                 src={event.image}
                 alt={event.title}
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-cover cursor-pointer"
+                onClick={() => onNavigate("event-detail")}
               />
 
               {/* Text */}
