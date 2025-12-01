@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
       className="fixed top-0 left-0 right-0 z-[9999]"
       onMouseLeave={() => setIsMenuVisible(false)}
     >
-      {/* --- TOP NAV BAR --- */}
+      {/* TOP NAV BAR */}
       <div
         className={`transition-all duration-500 ${
           isSolid ? "bg-white/95 backdrop-blur-sm shadow-md" : "bg-transparent"
@@ -39,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
       >
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center">
 
-          {/* 로고 */}
+          {/* LOGO */}
           <div className="absolute left-0">
             <button
               onClick={() => {
@@ -55,15 +55,14 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
             </button>
           </div>
 
-          {/* --- 7열 네비게이션 (1열은 로고아래 빈칸) --- */}
+          {/* MENU GRID */}
           <nav
-            className="hidden md:grid grid-cols-7 w-full gap-x-6 ml-[120px]"
+            className="hidden md:grid grid-cols-7 w-full gap-x-6 ml-[120px] h-12 items-center"
             onMouseEnter={() => setIsMenuVisible(true)}
           >
-            {/* 1열: 로고 아래 빈칸 */}
+            {/* 1열: 로고 아래 빈칸 — 복원됨 */}
             <div></div>
 
-            {/* 2~7 열: 실제 메뉴 */}
             {TOP_LINKS.map((link) => (
               <button
                 key={link.name}
@@ -83,10 +82,10 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
             ))}
           </nav>
 
-          {/* 모바일 메뉴 버튼 */}
+          {/* MOBILE MENU BUTTON */}
           <div className="absolute right-0 md:hidden flex items-center">
             <button
-              onClick={() => setIsMobileMenuOpen((v) => !v)}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-3xl"
             >
               {isMobileMenuOpen ? (
@@ -101,32 +100,25 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
         </div>
       </div>
 
-      {/* --- MEGA MENU --- */}
+      {/* MEGA MENU */}
       <div
         className={`absolute top-full left-0 w-full bg-[#175689]/95 backdrop-blur-sm shadow-lg 
           transition-all duration-500
-          ${
-            isMenuVisible
-              ? "max-h-[500px] opacity-100"
-              : "max-h-0 opacity-0 invisible"
-          }`}
+          ${isMenuVisible ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0 invisible"}
+        `}
       >
         <div className="container mx-auto px-10 py-8">
-          
-          {/* 7열 (1열은 로고 아래 빈칸) */}
           <div className="grid grid-cols-7 gap-x-6 ml-[120px]">
 
-            {/* 1열 비워두기 */}
             <div></div>
 
-            {/* 2~7열 서브메뉴 */}
             {TOP_LINKS.map((link) => (
               <div key={link.name} className="flex flex-col items-center">
-                <ul className="space-y-[1px] text-center w-full">
-                  {(link.children ?? []).map((child, idx) => (
-                    <li key={idx}>
+                <ul className="space-y-3 text-center w-full">
+                  {(link.children ?? []).map((child) => (
+                    <li key={child.pageId}>
                       <button
-                        className="text-[17px] text-slate-200 hover:text-white transition"
+                        className="text-[15px] text-slate-200 hover:text-white"
                         onClick={() => {
                           onNavigate(child.pageId as PageId);
                           setIsMenuVisible(false);

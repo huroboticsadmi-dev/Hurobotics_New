@@ -44,7 +44,6 @@ export const NAV_LINKS: Page[] = [
       { name: "이벤트", path: "/event", pageId: "event" }
     ],
   },
-
   {
     name: "도입사례",
     path: "/cases",

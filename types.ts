@@ -15,7 +15,8 @@ export type PageId =
   | "experience"        // 체험신청
   | "as"                // A/S신청
   | "cases"             // 도입사례
-  | "event"             // ⭐ 신규 추가된 이벤트 페이지
+  | "event"             // 이벤트 리스트 페이지
+  | "event-detail"      // ⭐ 이벤트 상세 페이지 (새로 추가!)
   | "support"           // 고객지원 메인
   | "support-resources" // 자료실
   | "support-faq"       // FAQ

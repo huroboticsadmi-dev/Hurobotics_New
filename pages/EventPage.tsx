@@ -1,4 +1,10 @@
+// pages/EventPage.tsx
 import React, { useState } from "react";
+import type { PageId } from "../types";
+
+interface EventPageProps {
+  onNavigate: (page: PageId) => void;
+}
 
 interface EventItem {
   id: string;
@@ -10,10 +16,20 @@ interface EventItem {
   status: "ongoing" | "ended";
 }
 
-// 🔥 지금은 비워두고 — 이벤트 생기면 여기 배열에 추가만 하면 됨!
-const events: EventItem[] = [];
+// 🔥 이벤트 배열 — 필요할 때 이 배열만 수정하면 됨!
+const events: EventItem[] = [
+  {
+    id: "promo_202512",
+    title: "12월 특별프로모션",
+    desc: "12월 한정! 청소로봇 특별 프로모션을 확인하세요.",
+    image: "/images/promo_december.png", // 필요하면 파일명 바꿔줘!
+    start: "2025-12-01",
+    end: "2025-12-31",
+    status: "ongoing",
+  },
+];
 
-const EventPage: React.FC = () => {
+const EventPage: React.FC<EventPageProps> = ({ onNavigate }) => {
   const [tab, setTab] = useState<"ongoing" | "ended">("ongoing");
 
   const filteredEvents = events.filter((e) => e.status === tab);
@@ -51,9 +67,47 @@ const EventPage: React.FC = () => {
         </div>
 
         {/* Empty state */}
-        <div className="text-gray-500 text-lg mt-20 text-center">
-          등록된 이벤트가 없습니다.
+        {filteredEvents.length === 0 && (
+          <div className="text-gray-500 text-lg mt-20 text-center">
+            등록된 이벤트가 없습니다.
+          </div>
+        )}
+
+        {/* Event list */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {filteredEvents.map((event) => (
+            <div key={event.id} className="border rounded-lg shadow-sm overflow-hidden">
+
+              {/* Image */}
+              <img
+                src={event.image}
+                alt={event.title}
+                className="w-full h-48 object-cover"
+              />
+
+              {/* Text */}
+              <div className="p-5">
+                <h2 className="text-xl font-bold mb-2">{event.title}</h2>
+                <p className="text-gray-600 text-sm mb-4">{event.desc}</p>
+
+                {/* Dates */}
+                <div className="text-sm text-gray-500 mb-4">
+                  {event.start} ~ {event.end}
+                </div>
+
+                {/* View detail */}
+                <button
+                  onClick={() => onNavigate("event-detail")}
+                  className="text-[#175689] font-semibold"
+                >
+                  자세히 보기 →
+                </button>
+              </div>
+
+            </div>
+          ))}
         </div>
+
       </div>
     </div>
   );

@@ -10,7 +10,8 @@ import RentalPage from "./pages/RentalPage";   // 시연신청
 import ASPage from "./pages/ASPage";           // A/S신청
 import CasesPage from "./pages/CasesPage";     // 도입사례
 import SupportPage from "./pages/SupportPage"; // 고객지원
-import EventPage from "./pages/EventPage";     // ⭐ 이벤트 페이지 추가
+import EventPage from "./pages/EventPage";     // 이벤트 리스트 페이지
+import EventDetailPage from "./pages/EventDetailPage"; // ⭐ 이벤트 상세 페이지
 import type { Product, PageId } from "./types";
 
 const App: React.FC = () => {
@@ -48,7 +49,7 @@ const App: React.FC = () => {
     return () => window.removeEventListener("popstate", handlePopState);
   }, [currentPage]);
 
-  // 페이지 이동
+  // 페이지 이동 핸들러
   const handleNavigate = (page: PageId) => {
     if (page === "products") {
       setProductCategory("청소로봇");
@@ -100,7 +101,7 @@ const App: React.FC = () => {
     }
   };
 
-  // 제품 상세 페이지 이동
+  // 제품 상세 선택
   const handleProductSelect = (product: Product) => {
     setSelectedProduct(product);
     setCurrentPage("product");
@@ -147,9 +148,13 @@ const App: React.FC = () => {
       case "as":
         return <ASPage />;
 
-      /* ⭐⭐⭐ 이벤트 라우팅 추가됨 ⭐⭐⭐ */
+      /* ⭐ 이벤트 리스트 페이지 */
       case "event":
-        return <EventPage />;
+        return <EventPage onNavigate={handleNavigate} />;
+
+      /* ⭐ 이벤트 상세 페이지 */
+      case "event-detail":
+        return <EventDetailPage onNavigate={handleNavigate} />;
 
       case "cases":
         return <CasesPage />;
